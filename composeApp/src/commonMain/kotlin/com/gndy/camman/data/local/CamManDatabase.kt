@@ -10,6 +10,7 @@ import com.gndy.camman.data.local.dao.PaymentMethodDao
 import com.gndy.camman.data.local.dao.PhotoDao
 import com.gndy.camman.data.local.dao.PhotographerProfileDao
 import com.gndy.camman.data.local.dao.PhotographerRegistrationDao
+import com.gndy.camman.data.local.dao.ReviewDao
 import com.gndy.camman.data.local.entity.AlbumEntity
 import com.gndy.camman.data.local.entity.BookingEntity
 import com.gndy.camman.data.local.entity.NotificationEntity
@@ -18,6 +19,7 @@ import com.gndy.camman.data.local.entity.PaymentMethodEntity
 import com.gndy.camman.data.local.entity.PhotoEntity
 import com.gndy.camman.data.local.entity.PhotographerProfileEntity
 import com.gndy.camman.data.local.entity.PhotographerRegistrationEntity
+import com.gndy.camman.data.local.entity.ReviewEntity
 
 @Database(
     entities = [
@@ -28,9 +30,10 @@ import com.gndy.camman.data.local.entity.PhotographerRegistrationEntity
         PaymentMethodEntity::class,
         PhotographerProfileEntity::class,
         PhotographerRegistrationEntity::class,
-        NotificationEntity::class
+        NotificationEntity::class,
+        ReviewEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class CamManDatabase : RoomDatabase() {
@@ -42,6 +45,7 @@ abstract class CamManDatabase : RoomDatabase() {
     abstract fun photographerProfileDao(): PhotographerProfileDao
     abstract fun photographerRegistrationDao(): PhotographerRegistrationDao
     abstract fun notificationDao(): NotificationDao
+    abstract fun reviewDao(): ReviewDao
 
     companion object {
         const val DATABASE_NAME = "camman_database"

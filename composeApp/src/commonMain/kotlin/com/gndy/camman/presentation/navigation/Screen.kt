@@ -86,6 +86,22 @@ sealed class Screen {
     @Serializable
     data class BookingConfirmation(val bookingId: String) : Screen()
 
+    // ===== Review Screens =====
+    @Serializable
+    data class SubmitReview(
+        val photographerId: String,
+        val bookingId: String,
+        val photographerName: String,
+        val photographerImageUrl: String?,
+        val serviceType: String
+    ) : Screen()
+
+    @Serializable
+    data class EditReview(val reviewId: String) : Screen()
+
+    @Serializable
+    data class PhotographerReviews(val photographerId: String) : Screen()
+
     // Legacy - kept for compatibility
     @Serializable
     data object Home : Screen()

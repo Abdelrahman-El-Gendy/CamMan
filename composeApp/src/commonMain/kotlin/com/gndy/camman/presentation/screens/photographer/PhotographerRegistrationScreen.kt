@@ -112,7 +112,7 @@ fun PhotographerRegistrationScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.events.collectLatest { event ->
+        viewModel.events.collect { event ->
             when (event) {
                 is PhotographerRegistrationEvent.RegistrationSuccess -> {
                     onRegistrationComplete()

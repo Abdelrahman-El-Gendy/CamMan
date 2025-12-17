@@ -13,6 +13,7 @@ import com.gndy.camman.data.repository.PaymentRepositoryImpl
 import com.gndy.camman.data.repository.PhotoRepositoryImpl
 import com.gndy.camman.data.repository.PhotographerRepositoryImpl
 import com.gndy.camman.data.repository.ProfileRepositoryImpl
+import com.gndy.camman.data.repository.ReviewRepositoryImpl
 import com.gndy.camman.domain.repository.AlbumRepository
 import com.gndy.camman.domain.repository.BookingRepository
 import com.gndy.camman.domain.repository.PackageRepository
@@ -20,12 +21,18 @@ import com.gndy.camman.domain.repository.PaymentRepository
 import com.gndy.camman.domain.repository.PhotoRepository
 import com.gndy.camman.domain.repository.PhotographerRepository
 import com.gndy.camman.domain.repository.ProfileRepository
+import com.gndy.camman.domain.repository.ReviewRepository
 import com.gndy.camman.domain.usecase.album.GetAlbumPhotosUseCase
 import com.gndy.camman.domain.usecase.album.GetAlbumsUseCase
 import com.gndy.camman.domain.usecase.booking.CreateBookingUseCase
 import com.gndy.camman.domain.usecase.packages.GetPackagesUseCase
 import com.gndy.camman.domain.usecase.payment.SubmitPaymentUseCase
 import com.gndy.camman.domain.usecase.profile.GetPhotographerContactInfoUseCase
+import com.gndy.camman.domain.usecase.review.GetReviewsUseCase
+import com.gndy.camman.domain.usecase.review.MarkReviewHelpfulUseCase
+import com.gndy.camman.domain.usecase.review.RespondToReviewUseCase
+import com.gndy.camman.domain.usecase.review.SubmitReviewUseCase
+import com.gndy.camman.domain.usecase.review.UpdateReviewUseCase
 import com.gndy.camman.presentation.screens.booking.BookingViewModel
 import com.gndy.camman.presentation.screens.contact.ContactViewModel
 import com.gndy.camman.presentation.screens.home.HomeViewModel
@@ -37,6 +44,7 @@ import com.gndy.camman.presentation.screens.photographer.PhotographerRegistratio
 import com.gndy.camman.presentation.screens.portfolio.AlbumDetailViewModel
 import com.gndy.camman.presentation.screens.portfolio.PhotoPreviewViewModel
 import com.gndy.camman.presentation.screens.portfolio.PortfolioAlbumsViewModel
+import com.gndy.camman.presentation.screens.review.ReviewViewModel
 import com.gndy.camman.presentation.screens.user.BrowsePhotographersViewModel
 import com.gndy.camman.presentation.screens.user.MyBookingsViewModel
 import com.gndy.camman.presentation.screens.user.PhotographerDetailViewModel
@@ -55,6 +63,7 @@ val sharedModule = module {
     single<CamManDatabase> {
         get<DatabaseFactory>()
             .create()
+            .fallbackToDestructiveMigration(dropAllTables = true) // Added for version 4 (ReviewEntity)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
@@ -69,6 +78,7 @@ val sharedModule = module {
     single { get<CamManDatabase>().photographerProfileDao() }
     single { get<CamManDatabase>().photographerRegistrationDao() }
     single { get<CamManDatabase>().notificationDao() }
+    single { get<CamManDatabase>().reviewDao() }
 
     // Network
     single { createHttpClient() }
@@ -88,6 +98,9 @@ val sharedModule = module {
     // Photographer Repository (Singleton to share state between screens)
     single<PhotographerRepository> { PhotographerRepositoryImpl(get()) }
 
+    // Review Repository
+    single<ReviewRepository> { ReviewRepositoryImpl(get()) }
+
     // Use Cases
     single { GetAlbumsUseCase(get()) }
     single { GetAlbumPhotosUseCase(get()) }
@@ -95,6 +108,13 @@ val sharedModule = module {
     single { CreateBookingUseCase(get()) }
     single { SubmitPaymentUseCase(get()) }
     single { GetPhotographerContactInfoUseCase(get()) }
+
+    // Review Use Cases
+    single { SubmitReviewUseCase(get()) }
+    single { GetReviewsUseCase(get()) }
+    single { UpdateReviewUseCase(get()) }
+    single { RespondToReviewUseCase(get()) }
+    single { MarkReviewHelpfulUseCase(get()) }
 
     // ViewModels - User (Client)
     viewModel { BrowsePhotographersViewModel(get()) }
@@ -115,7 +135,11 @@ val sharedModule = module {
     viewModel { PackagesViewModel(get()) }
     viewModel { PackageDetailViewModel(get()) }
     viewModel { BookingViewModel(get(), get(), get(), get()) }
+    viewModel { com.gndy.camman.presentation.screens.booking.BookingConfirmationViewModel(get()) }
     viewModel { ContactViewModel(get()) }
+
+    // ViewModels - Reviews
+    viewModel { ReviewViewModel(get(), get(), get(), get(), get()) }
 }
 
 // ===== FIREBASE AUTH MODULE =====

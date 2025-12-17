@@ -71,7 +71,7 @@ class PhotographerRegistrationViewModel(
 
     // Use replay = 1 to ensure event is delivered even if collector starts late
     private val _events = MutableSharedFlow<PhotographerRegistrationEvent>(
-        replay = 0,
+        replay = 1,  // Fixed: was 0, now 1 to ensure event delivery
         extraBufferCapacity = 1
     )
     val events = _events.asSharedFlow()

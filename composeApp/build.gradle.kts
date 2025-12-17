@@ -119,21 +119,37 @@ android {
             abiFilters += listOf("arm64-v8a", "x86_64")
         }
     }
+    // ============== Signing Configuration ==============
+    signingConfigs {
+        create("release") {
+            val props = project.rootProject.file("gradle.properties")
+            if (props.exists()) {
+                storeFile = file(project.property("RELEASE_STORE_FILE") as String)
+                storePassword = project.property("RELEASE_STORE_PASSWORD") as String
+                keyAlias = project.property("RELEASE_KEY_ALIAS") as String
+                keyPassword = project.property("RELEASE_KEY_PASSWORD") as String
+            }
+        }
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
-        // 16KB Page Size Compatibility for Android 15+
         jniLibs {
             useLegacyPackaging = true
-            // Exclude ML Kit libraries that are not 16KB aligned
-            // These come from the image picker dependency
             excludes += "**/libimage_processing_util_jni.so"
         }
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
