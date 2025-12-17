@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">CamMan</string>
+    <string name="app_tagline">Fotografie Portfolio</string>
+
+    <!-- Common -->
+    <string name="back">Zurück</string>
+    <string name="next">Weiter</string>
+    <string name="skip">Überspringen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="save">Speichern</string>
+    <string name="delete">Löschen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="close">Schließen</string>
+    <string name="search">Suchen</string>
+    <string name="all">Alle</string>
+    <string name="details">Details</string>
+    <string name="loading">Wird geladen...</string>
+    <string name="error">Fehler</string>
+    <string name="success">Erfolg</string>
+    <string name="coming_soon">Demnächst Verfügbar</string>
+    <string name="previous">Zurück</string>
+
+    <!-- Navigation -->
+    <string name="nav_browse">Durchsuchen</string>
+    <string name="nav_bookings">Buchungen</string>
+    <string name="nav_favorites">Favoriten</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_home">Startseite</string>
+    <string name="nav_portfolio">Portfolio</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="menu">Menü</string>
+    <string name="settings">Einstellungen</string>
+
+    <!-- Splash Screen -->
+    <string name="camera">Kamera</string>
+
+    <!-- Onboarding -->
+    <string name="get_started">Loslegen</string>
+    <string name="find_your_perfect_match">Finde Deinen Perfekten Match</string>
+    <string name="discover_amazing_photographers">Entdecke Erstaunliche Fotografen</string>
+    <string name="discover_photographers_desc">Durchstöbere eine kuratierte Sammlung talentierter Fotografen, die sich auf Hochzeiten, Porträts, Events und mehr spezialisiert haben.</string>
+    <string name="quality_that_speaks">Qualität, die Spricht</string>
+    <string name="explore_stunning_portfolios">Erkunde Atemberaubende Portfolios</string>
+    <string name="explore_portfolios_desc">Sieh dir hochwertige Fotogalerien an, vergleiche Stile und finde den Fotografen, dessen Vision zu deiner passt.</string>
+    <string name="seamless_booking">Nahtlose Buchung</string>
+    <string name="book_with_confidence">Buche mit Vertrauen</string>
+    <string name="book_with_confidence_desc">Plane Sitzungen einfach, wähle aus verschiedenen Paketen und sichere deine Buchung mit nur wenigen Klicks.</string>
+    <string name="verified_badge">100% Verifiziert</string>
+    <string name="trusted_and_professional">Vertrauenswürdig &amp; Professionell</string>
+    <string name="trusted_professional_desc">Alle Fotografen sind verifizierte Profis. Lies Bewertungen, überprüfe Ratings und triff fundierte Entscheidungen.</string>
+
+    <!-- User Type Selection -->
+    <string name="welcome_to_camman">Willkommen bei CamMan</string>
+    <string name="how_to_use_app">Wie möchtest du die App nutzen?</string>
+    <string name="looking_for_photographer">Ich suche einen Fotografen</string>
+    <string name="looking_for_photographer_desc">Durchsuche Fotografen, sieh dir Portfolios an und buche Sitzungen</string>
+    <string name="continue_as_client">Als Kunde Fortfahren</string>
+    <string name="i_am_photographer">Ich bin Fotograf</string>
+    <string name="i_am_photographer_desc">Verwalte dein Portfolio, Pakete und Buchungen</string>
+    <string name="continue_as_photographer">Als Fotograf Fortfahren</string>
+
+    <!-- Auth - Sign In -->
+    <string name="sign_in">Anmelden</string>
+    <string name="sign_out">Abmelden</string>
+    <string name="welcome_back">Willkommen Zurück</string>
+    <string name="sign_in_to_continue">Melde dich an um fortzufahren</string>
+    <string name="email">E-Mail</string>
+    <string name="enter_your_email">Gib deine E-Mail ein</string>
+    <string name="password">Passwort</string>
+    <string name="enter_your_password">Gib dein Passwort ein</string>
+    <string name="forgot_password">Passwort vergessen?</string>
+    <string name="dont_have_account">Hast du noch kein Konto?</string>
+    <string name="toggle_password_visibility">Passwort anzeigen/verbergen</string>
+
+    <!-- Auth - Sign Up -->
+    <string name="sign_up">Registrieren</string>
+    <string name="create_account">Konto Erstellen</string>
+    <string name="join_camman_portfolio">Tritt CamMan Portfolio bei</string>
+    <string name="display_name_optional">Anzeigename (Optional)</string>
+    <string name="enter_your_name">Gib deinen Namen ein</string>
+    <string name="email_required">E-Mail *</string>
+    <string name="password_required">Passwort *</string>
+    <string name="create_a_password">Erstelle ein Passwort</string>
+    <string name="password_hint">Mindestens 6 Zeichen mit Buchstaben und Zahlen</string>
+    <string name="confirm_password">Passwort Bestätigen *</string>
+    <string name="confirm_your_password">Bestätige dein Passwort</string>
+    <string name="already_have_account">Hast du bereits ein Konto?</string>
+
+    <!-- Auth - Forgot Password -->
+    <string name="reset_password">Passwort Zurücksetzen</string>
+    <string name="forgot_password_title">Passwort Vergessen?</string>
+    <string name="forgot_password_desc">Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines Passworts.</string>
+    <string name="send_reset_link">Zurücksetzungslink Senden</string>
+    <string name="back_to_sign_in">Zurück zur Anmeldung</string>
+    <string name="email_sent">E-Mail Gesendet!</string>
+    <string name="reset_link_sent_to">Wir haben einen Link zum Zurücksetzen des Passworts gesendet an:</string>
+    <string name="check_inbox_instruction">Bitte überprüfe deinen Posteingang und folge den Anweisungen zum Zurücksetzen deines Passworts.</string>
+
+    <!-- Home Screen -->
+    <string name="photographer">Fotograf</string>
+    <string name="professional_photography">Professionelle Fotografie</string>
+    <string name="welcome">Willkommen</string>
+    <string name="default_bio">Momente festhalten, die für immer bleiben. Spezialisiert auf Hochzeits-, Porträt- und Eventfotografie.</string>
+    <string name="view_portfolio">Portfolio Ansehen</string>
+    <string name="book_a_session">Eine Sitzung Buchen</string>
+    <string name="featured_work">Ausgewählte Arbeiten</string>
+    <string name="photos_count">%d Fotos</string>
+    <string name="get_started_section">Loslegen</string>
+    <string name="photography_packages">Fotografie-Pakete</string>
+    <string name="view_packages_desc">Sieh dir unsere Pakete und Preise an</string>
+    <string name="contact_me">Kontaktiere Mich</string>
+    <string name="contact_me_desc">Lass uns über dein Projekt sprechen</string>
+
+    <!-- Browse Photographers -->
+    <string name="find_photographers">Fotografen Finden</string>
+    <string name="search_placeholder">Nach Name, Ort oder Spezialgebiet suchen...</string>
+    <string name="no_photographers_found">Keine Fotografen gefunden</string>
+    <string name="try_adjusting_filters">Versuche deine Filter anzupassen</string>
+    <string name="unavailable">Nicht Verfügbar</string>
+    <string name="rating">Bewertung</string>
+    <string name="starting_from">Ab %d$ %s</string>
+
+    <!-- Portfolio -->
+    <string name="album">Album</string>
+
+    <!-- Packages -->
+    <string name="popular">Beliebt</string>
+    <string name="duration_label">Dauer: %s</string>
+    <string name="more_features">+%d weitere Funktionen</string>
+    <string name="book_now">Jetzt Buchen</string>
+    <string name="package_details">Paketdetails</string>
+    <string name="starting_at">Ab</string>
+    <string name="book_this_package">Dieses Paket Buchen</string>
+    <string name="duration">Dauer</string>
+    <string name="photos">Fotos</string>
+    <string name="unlimited">Unbegrenzt</string>
+    <string name="delivery">Lieferung</string>
+    <string name="days">%d Tage</string>
+    <string name="whats_included">Was Enthalten Ist</string>
+    <string name="deliverables">Lieferumfang</string>
+    <string name="additional_information">Zusätzliche Informationen</string>
+    <string name="professional_editing_included">Professionelle Fotobearbeitung inklusive</string>
+    <string name="prints_included">Drucke inklusive</string>
+
+    <!-- Booking -->
+    <string name="book_session">Sitzung Buchen</string>
+    <string name="step_of">Schritt %d von %d</string>
+    <string name="selected_package">Ausgewähltes Paket</string>
+    <string name="choose_date_time">Datum &amp; Uhrzeit Wählen</string>
+    <string name="session_location">Sitzungsort</string>
+    <string name="enter_address_or_location">Adresse oder Ort eingeben</string>
+    <string name="available_dates">Verfügbare Termine</string>
+    <string name="contact_us_to_schedule">Kontaktiere uns um deine Sitzung zu planen</string>
+    <string name="selected">Ausgewählt: %s</string>
+    <string name="time">Uhrzeit: %s</string>
+    <string name="your_details">Deine Angaben</string>
+    <string name="full_name">Vollständiger Name *</string>
+    <string name="email_address">E-Mail-Adresse *</string>
+    <string name="phone_number">Telefonnummer *</string>
+    <string name="address_optional">Adresse (optional)</string>
+    <string name="special_requests">Besondere Wünsche (optional)</string>
+    <string name="payment_method">Zahlungsmethode</string>
+    <string name="select_payment_method">Wähle wie du bezahlen möchtest</string>
+    <string name="pay_at_session">Bei der Sitzung bezahlen</string>
+    <string name="pay_at_session_desc">Die Zahlung kann am Tag deiner Sitzung erfolgen</string>
+    <string name="booking_summary">Buchungsübersicht</string>
+    <string name="package">Paket</string>
+    <string name="date">Datum</string>
+    <string name="to_be_scheduled">Noch zu planen</string>
+    <string name="location">Ort</string>
+    <string name="name">Name</string>
+    <string name="phone">Telefon</string>
+    <string name="payment">Zahlung</string>
+    <string name="deposit">Anzahlung (30%)</string>
+    <string name="total">Gesamt</string>
+    <string name="additional_notes">Zusätzliche Notizen (optional)</string>
+    <string name="confirm_booking">Buchung Bestätigen</string>
+
+    <!-- Contact -->
+    <string name="contact">Kontakt</string>
+    <string name="call">Anrufen</string>
+    <string name="website">Webseite</string>
+    <string name="send_a_message">Eine Nachricht Senden</string>
+    <string name="your_name">Dein Name *</string>
+    <string name="your_email">Deine E-Mail *</string>
+    <string name="subject">Betreff</string>
+    <string name="message">Nachricht *</string>
+    <string name="send_message">Nachricht Senden</string>
+
+    <!-- Placeholder Screens -->
+    <string name="my_bookings">Meine Buchungen</string>
+    <string name="my_bookings_desc">Deine kommenden und vergangenen Buchungen erscheinen hier</string>
+    <string name="favorites">Favoriten</string>
+    <string name="favorites_desc">Deine Lieblingsfotografen erscheinen hier</string>
+    <string name="my_profile">Mein Profil</string>
+    <string name="profile_settings_desc">Profileinstellungen erscheinen hier</string>
+    <string name="my_portfolio">Mein Portfolio</string>
+    <string name="manage_portfolio_desc">Verwalte hier deine Alben und Fotos</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="dashboard_desc">Deine Geschäftsübersicht und Analysen erscheinen hier</string>
+    <string name="bookings">Buchungen</string>
+    <string name="manage_bookings_desc">Sieh und verwalte die Buchungen deiner Kunden</string>
+</resources>

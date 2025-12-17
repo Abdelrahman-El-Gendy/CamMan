@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">CamMan</string>
+    <string name="app_tagline">Photography Portfolio</string>
+
+    <!-- Common -->
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="close">Close</string>
+    <string name="search">Search</string>
+    <string name="all">All</string>
+    <string name="details">Details</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="previous">Previous</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="required">Required</string>
+    <string name="optional">Optional</string>
+
+    <!-- Navigation -->
+    <string name="nav_browse">Browse</string>
+    <string name="nav_bookings">Bookings</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_portfolio">Portfolio</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="menu">Menu</string>
+    <string name="settings">Settings</string>
+
+    <!-- Splash Screen -->
+    <string name="camera">Camera</string>
+
+    <!-- Onboarding -->
+    <string name="get_started">Get Started</string>
+    <string name="find_your_perfect_match">Find Your Perfect Match</string>
+    <string name="discover_amazing_photographers">Discover Amazing Photographers</string>
+    <string name="discover_photographers_desc">Browse through a curated collection of talented photographers specializing in weddings, portraits, events, and more.</string>
+    <string name="quality_that_speaks">Quality That Speaks</string>
+    <string name="explore_stunning_portfolios">Explore Stunning Portfolios</string>
+    <string name="explore_portfolios_desc">View high-quality photo galleries, compare styles, and find the photographer whose vision matches yours.</string>
+    <string name="seamless_booking">Seamless Booking</string>
+    <string name="book_with_confidence">Book With Confidence</string>
+    <string name="book_with_confidence_desc">Schedule sessions easily, choose from various packages, and secure your booking with just a few taps.</string>
+    <string name="verified_badge">100% Verified</string>
+    <string name="trusted_and_professional">Trusted &amp; Professional</string>
+    <string name="trusted_professional_desc">All photographers are verified professionals. Read reviews, check ratings, and make informed decisions.</string>
+
+    <!-- User Type Selection -->
+    <string name="welcome_to_camman">Welcome to CamMan</string>
+    <string name="how_to_use_app">How would you like to use the app?</string>
+    <string name="looking_for_photographer">I\'m looking for a photographer</string>
+    <string name="looking_for_photographer_desc">Browse photographers, view portfolios, and book sessions</string>
+    <string name="continue_as_client">Continue as Client</string>
+    <string name="i_am_photographer">I\'m a photographer</string>
+    <string name="i_am_photographer_desc">Manage your portfolio, packages, and bookings</string>
+    <string name="continue_as_photographer">Continue as Photographer</string>
+
+    <!-- Auth - Sign In -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="sign_in_to_continue">Sign in to continue</string>
+    <string name="email">Email</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="password">Password</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="toggle_password_visibility">Toggle password visibility</string>
+
+    <!-- Auth - Sign Up -->
+    <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="join_camman_portfolio">Join CamMan Portfolio</string>
+    <string name="display_name_optional">Display Name (Optional)</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="email_required">Email *</string>
+    <string name="password_required">Password *</string>
+    <string name="create_a_password">Create a password</string>
+    <string name="password_hint">At least 6 characters with letters and numbers</string>
+    <string name="confirm_password">Confirm Password *</string>
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="already_have_account">Already have an account?</string>
+
+    <!-- Auth - Forgot Password -->
+    <string name="reset_password">Reset Password</string>
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_desc">Enter your email address and we\'ll send you a link to reset your password.</string>
+    <string name="send_reset_link">Send Reset Link</string>
+    <string name="back_to_sign_in">Back to Sign In</string>
+    <string name="email_sent">Email Sent!</string>
+    <string name="reset_link_sent_to">We\'ve sent a password reset link to:</string>
+    <string name="check_inbox_instruction">Please check your inbox and follow the instructions to reset your password.</string>
+
+    <!-- Home Screen -->
+    <string name="photographer">Photographer</string>
+    <string name="professional_photography">Professional Photography</string>
+    <string name="welcome">Welcome</string>
+    <string name="default_bio">Capturing moments that last forever. Specializing in wedding, portrait, and event photography.</string>
+    <string name="view_portfolio">View Portfolio</string>
+    <string name="book_a_session">Book a Session</string>
+    <string name="featured_work">Featured Work</string>
+    <string name="photos_count">%d photos</string>
+    <string name="get_started_section">Get Started</string>
+    <string name="photography_packages">Photography Packages</string>
+    <string name="view_packages_desc">View our packages and pricing</string>
+    <string name="contact_me">Contact Me</string>
+    <string name="contact_me_desc">Let\'s discuss your project</string>
+
+    <!-- Browse Photographers -->
+    <string name="find_photographers">Find Photographers</string>
+    <string name="search_placeholder">Search by name, location, or specialty...</string>
+    <string name="no_photographers_found">No photographers found</string>
+    <string name="try_adjusting_filters">Try adjusting your filters</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="rating">Rating</string>
+    <string name="starting_from">Starting from $%d %s</string>
+
+    <!-- Portfolio -->
+    <string name="album">Album</string>
+
+    <!-- Packages -->
+    <string name="popular">Popular</string>
+    <string name="duration_label">Duration: %s</string>
+    <string name="more_features">+%d more features</string>
+    <string name="book_now">Book Now</string>
+    <string name="package_details">Package Details</string>
+    <string name="starting_at">Starting at</string>
+    <string name="book_this_package">Book This Package</string>
+    <string name="duration">Duration</string>
+    <string name="photos">Photos</string>
+    <string name="unlimited">Unlimited</string>
+    <string name="delivery">Delivery</string>
+    <string name="days">%d days</string>
+    <string name="whats_included">What\'s Included</string>
+    <string name="deliverables">Deliverables</string>
+    <string name="additional_information">Additional Information</string>
+    <string name="professional_editing_included">Professional photo editing included</string>
+    <string name="prints_included">Print copies included</string>
+
+    <!-- Booking -->
+    <string name="book_session">Book Session</string>
+    <string name="step_of">Step %d of %d</string>
+    <string name="selected_package">Selected Package</string>
+    <string name="choose_date_time">Choose Date &amp; Time</string>
+    <string name="session_location">Session Location</string>
+    <string name="enter_address_or_location">Enter address or location</string>
+    <string name="available_dates">Available Dates</string>
+    <string name="contact_us_to_schedule">Contact us to schedule your session</string>
+    <string name="selected">Selected: %s</string>
+    <string name="time">Time: %s</string>
+    <string name="your_details">Your Details</string>
+    <string name="full_name">Full Name *</string>
+    <string name="email_address">Email Address *</string>
+    <string name="phone_number">Phone Number *</string>
+    <string name="address_optional">Address (optional)</string>
+    <string name="special_requests">Special Requests (optional)</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="select_payment_method">Select how you\'d like to pay</string>
+    <string name="pay_at_session">Pay at session</string>
+    <string name="pay_at_session_desc">Payment can be made on the day of your session</string>
+    <string name="booking_summary">Booking Summary</string>
+    <string name="package">Package</string>
+    <string name="date">Date</string>
+    <string name="to_be_scheduled">To be scheduled</string>
+    <string name="location">Location</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="payment">Payment</string>
+    <string name="deposit">Deposit (30%)</string>
+    <string name="total">Total</string>
+    <string name="additional_notes">Additional Notes (optional)</string>
+    <string name="confirm_booking">Confirm Booking</string>
+
+    <!-- Contact -->
+    <string name="contact">Contact</string>
+    <string name="call">Call</string>
+    <string name="website">Website</string>
+    <string name="send_a_message">Send a Message</string>
+    <string name="your_name">Your Name *</string>
+    <string name="your_email">Your Email *</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message *</string>
+    <string name="send_message">Send Message</string>
+
+    <!-- Placeholder Screens -->
+    <string name="my_bookings">My Bookings</string>
+    <string name="my_bookings_desc">Your upcoming and past bookings will appear here</string>
+    <string name="favorites">Favorites</string>
+    <string name="favorites_desc">Your favorite photographers will appear here</string>
+    <string name="my_profile">My Profile</string>
+    <string name="profile_settings_desc">Profile settings will appear here</string>
+    <string name="my_portfolio">My Portfolio</string>
+    <string name="manage_portfolio_desc">Manage your albums and photos here</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="dashboard_desc">Your business overview and analytics will appear here</string>
+    <string name="bookings">Bookings</string>
+    <string name="manage_bookings_desc">View and manage your client bookings</string>
+
+    <!-- Photographer Registration -->
+    <string name="create_your_profile">Create Your Profile</string>
+    <string name="step_basic_info">Basic Info</string>
+    <string name="step_professional">Professional</string>
+    <string name="step_portfolio">Portfolio</string>
+    <string name="step_pricing">Pricing</string>
+    <string name="step_review">Review</string>
+    <string name="basic_info_title">Let\'s start with your basic information</string>
+    <string name="basic_info_subtitle">This information will help clients contact you</string>
+    <string name="professional_info_title">Tell us about your work</string>
+    <string name="professional_info_subtitle">Help clients understand your expertise</string>
+    <string name="portfolio_title">Showcase your work</string>
+    <string name="portfolio_subtitle">Add images to attract more clients</string>
+    <string name="pricing_title">Set your pricing</string>
+    <string name="pricing_subtitle">Let clients know your starting rates</string>
+    <string name="review_title">Review your profile</string>
+    <string name="review_subtitle">Make sure everything looks good before submitting</string>
+    <string name="enter_full_name">Enter your full name</string>
+    <string name="enter_phone_number">Enter your phone number</string>
+    <string name="bio_label">Bio *</string>
+    <string name="bio_placeholder">Tell clients about yourself and your photography style...</string>
+    <string name="location_label">Location *</string>
+    <string name="location_placeholder">City, State/Country</string>
+    <string name="specialties_label">Photography Specialties *</string>
+    <string name="experience_label">Experience Level</string>
+    <string name="profile_image_url">Profile Image URL</string>
+    <string name="cover_image_url">Cover Image URL</string>
+    <string name="portfolio_images">Portfolio Images</string>
+    <string name="add_portfolio_url">Add portfolio image URL</string>
+    <string name="starting_price">Starting Price</string>
+    <string name="available_for_bookings">Available for Bookings</string>
+    <string name="toggle_availability_desc">Let clients know you\'re accepting new bookings</string>
+    <string name="social_web_links">Social &amp; Web Links (Optional)</string>
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="complete_registration">Complete Registration</string>
+    <string name="registration_success">Profile created successfully!</string>
+    <string name="registration_failed">Registration failed. Please try again.</string>
+    <string name="contact_information">Contact Information</string>
+    <string name="professional_details">Professional Details</string>
+    <string name="pricing_availability">Pricing &amp; Availability</string>
+    <string name="experience">Experience</string>
+    <string name="specialties">Specialties</string>
+    <string name="images_added">%d images added</string>
+    <string name="not_set">Not set</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Photographer Dashboard -->
+<!--    <string name="welcome_back">Welcome back,</string>-->
+    <string name="available">Available</string>
+    <string name="quick_stats">Quick Stats</string>
+    <string name="profile_views">Profile Views</string>
+    <string name="earnings">Earnings</string>
+    <string name="your_profile">Your Profile</string>
+    <string name="tips_more_bookings">Tips to Get More Bookings</string>
+    <string name="tip_add_portfolio">Add more portfolio images</string>
+    <string name="tip_add_portfolio_desc">Profiles with 10+ images get 3x more views</string>
+    <string name="tip_complete_profile">Complete your profile</string>
+    <string name="tip_complete_profile_desc">Fill in all details to appear higher in search results</string>
+    <string name="edit_profile">Edit Profile</string>
+</resources>

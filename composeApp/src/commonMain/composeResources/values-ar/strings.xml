@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">كام مان</string>
+    <string name="app_tagline">معرض التصوير الفوتوغرافي</string>
+
+    <!-- Common -->
+    <string name="back">رجوع</string>
+    <string name="next">التالي</string>
+    <string name="skip">تخطي</string>
+    <string name="cancel">إلغاء</string>
+    <string name="confirm">تأكيد</string>
+    <string name="save">حفظ</string>
+    <string name="delete">حذف</string>
+    <string name="edit">تعديل</string>
+    <string name="close">إغلاق</string>
+    <string name="search">بحث</string>
+    <string name="all">الكل</string>
+    <string name="details">التفاصيل</string>
+    <string name="loading">جاري التحميل...</string>
+    <string name="error">خطأ</string>
+    <string name="success">نجاح</string>
+    <string name="coming_soon">قريباً</string>
+    <string name="previous">السابق</string>
+
+    <!-- Navigation -->
+    <string name="nav_browse">تصفح</string>
+    <string name="nav_bookings">الحجوزات</string>
+    <string name="nav_favorites">المفضلة</string>
+    <string name="nav_profile">الملف الشخصي</string>
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_portfolio">المعرض</string>
+    <string name="nav_dashboard">لوحة التحكم</string>
+    <string name="menu">القائمة</string>
+    <string name="settings">الإعدادات</string>
+
+    <!-- Splash Screen -->
+    <string name="camera">كاميرا</string>
+
+    <!-- Onboarding -->
+    <string name="get_started">ابدأ الآن</string>
+    <string name="find_your_perfect_match">اعثر على المصور المثالي</string>
+    <string name="discover_amazing_photographers">اكتشف مصورين رائعين</string>
+    <string name="discover_photographers_desc">تصفح مجموعة مختارة من المصورين الموهوبين المتخصصين في حفلات الزفاف والصور الشخصية والمناسبات والمزيد.</string>
+    <string name="quality_that_speaks">جودة تتحدث عن نفسها</string>
+    <string name="explore_stunning_portfolios">استكشف معارض مذهلة</string>
+    <string name="explore_portfolios_desc">شاهد معارض صور عالية الجودة، قارن بين الأساليب، واعثر على المصور الذي تتوافق رؤيته مع رؤيتك.</string>
+    <string name="seamless_booking">حجز سلس</string>
+    <string name="book_with_confidence">احجز بثقة</string>
+    <string name="book_with_confidence_desc">حدد مواعيد الجلسات بسهولة، اختر من بين باقات متنوعة، وأكد حجزك ببضع نقرات فقط.</string>
+    <string name="verified_badge">موثق 100%</string>
+    <string name="trusted_and_professional">موثوق ومحترف</string>
+    <string name="trusted_professional_desc">جميع المصورين محترفون موثقون. اقرأ التقييمات، تحقق من التصنيفات، واتخذ قرارات مستنيرة.</string>
+
+    <!-- User Type Selection -->
+    <string name="welcome_to_camman">مرحباً بك في كام مان</string>
+    <string name="how_to_use_app">كيف تريد استخدام التطبيق؟</string>
+    <string name="looking_for_photographer">أبحث عن مصور</string>
+    <string name="looking_for_photographer_desc">تصفح المصورين، شاهد المعارض، واحجز جلسات</string>
+    <string name="continue_as_client">المتابعة كعميل</string>
+    <string name="i_am_photographer">أنا مصور</string>
+    <string name="i_am_photographer_desc">إدارة معرضك وباقاتك وحجوزاتك</string>
+    <string name="continue_as_photographer">المتابعة كمصور</string>
+
+    <!-- Auth - Sign In -->
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="sign_out">تسجيل الخروج</string>
+    <string name="welcome_back">مرحباً بعودتك</string>
+    <string name="sign_in_to_continue">سجل الدخول للمتابعة</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="enter_your_email">أدخل بريدك الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="enter_your_password">أدخل كلمة المرور</string>
+    <string name="forgot_password">نسيت كلمة المرور؟</string>
+    <string name="dont_have_account">ليس لديك حساب؟</string>
+    <string name="toggle_password_visibility">إظهار/إخفاء كلمة المرور</string>
+
+    <!-- Auth - Sign Up -->
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="create_account">إنشاء حساب</string>
+    <string name="join_camman_portfolio">انضم إلى معرض كام مان</string>
+    <string name="display_name_optional">الاسم المعروض (اختياري)</string>
+    <string name="enter_your_name">أدخل اسمك</string>
+    <string name="email_required">البريد الإلكتروني *</string>
+    <string name="password_required">كلمة المرور *</string>
+    <string name="create_a_password">أنشئ كلمة مرور</string>
+    <string name="password_hint">6 أحرف على الأقل مع حروف وأرقام</string>
+    <string name="confirm_password">تأكيد كلمة المرور *</string>
+    <string name="confirm_your_password">أكد كلمة المرور</string>
+    <string name="already_have_account">لديك حساب بالفعل؟</string>
+
+    <!-- Auth - Forgot Password -->
+    <string name="reset_password">إعادة تعيين كلمة المرور</string>
+    <string name="forgot_password_title">نسيت كلمة المرور؟</string>
+    <string name="forgot_password_desc">أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.</string>
+    <string name="send_reset_link">إرسال رابط إعادة التعيين</string>
+    <string name="back_to_sign_in">العودة لتسجيل الدخول</string>
+    <string name="email_sent">تم إرسال البريد!</string>
+    <string name="reset_link_sent_to">لقد أرسلنا رابط إعادة تعيين كلمة المرور إلى:</string>
+    <string name="check_inbox_instruction">يرجى التحقق من صندوق الوارد واتباع التعليمات لإعادة تعيين كلمة المرور.</string>
+
+    <!-- Home Screen -->
+    <string name="photographer">مصور</string>
+    <string name="professional_photography">تصوير احترافي</string>
+    <string name="welcome">مرحباً</string>
+    <string name="default_bio">التقاط لحظات تدوم للأبد. متخصصون في تصوير حفلات الزفاف والصور الشخصية والمناسبات.</string>
+    <string name="view_portfolio">عرض المعرض</string>
+    <string name="book_a_session">احجز جلسة</string>
+    <string name="featured_work">أعمال مميزة</string>
+    <string name="photos_count">%d صورة</string>
+    <string name="get_started_section">ابدأ الآن</string>
+    <string name="photography_packages">باقات التصوير</string>
+    <string name="view_packages_desc">اطلع على باقاتنا وأسعارنا</string>
+    <string name="contact_me">تواصل معي</string>
+    <string name="contact_me_desc">دعنا نناقش مشروعك</string>
+
+    <!-- Browse Photographers -->
+    <string name="find_photographers">ابحث عن مصورين</string>
+    <string name="search_placeholder">ابحث بالاسم أو الموقع أو التخصص...</string>
+    <string name="no_photographers_found">لم يتم العثور على مصورين</string>
+    <string name="try_adjusting_filters">حاول تعديل الفلاتر</string>
+    <string name="unavailable">غير متاح</string>
+    <string name="rating">التقييم</string>
+    <string name="starting_from">يبدأ من $%d %s</string>
+
+    <!-- Portfolio -->
+    <string name="album">ألبوم</string>
+
+    <!-- Packages -->
+    <string name="popular">شائع</string>
+    <string name="duration_label">المدة: %s</string>
+    <string name="more_features">+%d مميزات إضافية</string>
+    <string name="book_now">احجز الآن</string>
+    <string name="package_details">تفاصيل الباقة</string>
+    <string name="starting_at">يبدأ من</string>
+    <string name="book_this_package">احجز هذه الباقة</string>
+    <string name="duration">المدة</string>
+    <string name="photos">الصور</string>
+    <string name="unlimited">غير محدود</string>
+    <string name="delivery">التسليم</string>
+    <string name="days">%d أيام</string>
+    <string name="whats_included">ما الذي يتضمنه</string>
+    <string name="deliverables">المخرجات</string>
+    <string name="additional_information">معلومات إضافية</string>
+    <string name="professional_editing_included">تعديل احترافي للصور مشمول</string>
+    <string name="prints_included">نسخ مطبوعة مشمولة</string>
+
+    <!-- Booking -->
+    <string name="book_session">حجز جلسة</string>
+    <string name="step_of">الخطوة %d من %d</string>
+    <string name="selected_package">الباقة المختارة</string>
+    <string name="choose_date_time">اختر التاريخ والوقت</string>
+    <string name="session_location">موقع الجلسة</string>
+    <string name="enter_address_or_location">أدخل العنوان أو الموقع</string>
+    <string name="available_dates">التواريخ المتاحة</string>
+    <string name="contact_us_to_schedule">تواصل معنا لجدولة جلستك</string>
+    <string name="selected">المحدد: %s</string>
+    <string name="time">الوقت: %s</string>
+    <string name="your_details">بياناتك</string>
+    <string name="full_name">الاسم الكامل *</string>
+    <string name="email_address">البريد الإلكتروني *</string>
+    <string name="phone_number">رقم الهاتف *</string>
+    <string name="address_optional">العنوان (اختياري)</string>
+    <string name="special_requests">طلبات خاصة (اختياري)</string>
+    <string name="payment_method">طريقة الدفع</string>
+    <string name="select_payment_method">اختر طريقة الدفع المفضلة</string>
+    <string name="pay_at_session">الدفع في الجلسة</string>
+    <string name="pay_at_session_desc">يمكن الدفع في يوم الجلسة</string>
+    <string name="booking_summary">ملخص الحجز</string>
+    <string name="package">الباقة</string>
+    <string name="date">التاريخ</string>
+    <string name="to_be_scheduled">سيتم تحديده لاحقاً</string>
+    <string name="location">الموقع</string>
+    <string name="name">الاسم</string>
+    <string name="phone">الهاتف</string>
+    <string name="payment">الدفع</string>
+    <string name="deposit">العربون (30%)</string>
+    <string name="total">المجموع</string>
+    <string name="additional_notes">ملاحظات إضافية (اختياري)</string>
+    <string name="confirm_booking">تأكيد الحجز</string>
+
+    <!-- Contact -->
+    <string name="contact">التواصل</string>
+    <string name="call">اتصال</string>
+    <string name="website">الموقع الإلكتروني</string>
+    <string name="send_a_message">أرسل رسالة</string>
+    <string name="your_name">اسمك *</string>
+    <string name="your_email">بريدك الإلكتروني *</string>
+    <string name="subject">الموضوع</string>
+    <string name="message">الرسالة *</string>
+    <string name="send_message">إرسال الرسالة</string>
+
+    <!-- Placeholder Screens -->
+    <string name="my_bookings">حجوزاتي</string>
+    <string name="my_bookings_desc">ستظهر حجوزاتك القادمة والسابقة هنا</string>
+    <string name="favorites">المفضلة</string>
+    <string name="favorites_desc">سيظهر المصورون المفضلون لديك هنا</string>
+    <string name="my_profile">ملفي الشخصي</string>
+    <string name="profile_settings_desc">ستظهر إعدادات الملف الشخصي هنا</string>
+    <string name="my_portfolio">معرضي</string>
+    <string name="manage_portfolio_desc">إدارة ألبوماتك وصورك هنا</string>
+    <string name="dashboard">لوحة التحكم</string>
+    <string name="dashboard_desc">ستظهر نظرة عامة على عملك والتحليلات هنا</string>
+    <string name="bookings">الحجوزات</string>
+    <string name="manage_bookings_desc">عرض وإدارة حجوزات العملاء</string>
+</resources>
