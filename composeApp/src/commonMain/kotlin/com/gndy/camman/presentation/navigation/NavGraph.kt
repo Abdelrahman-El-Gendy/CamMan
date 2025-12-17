@@ -297,12 +297,76 @@ fun CamManNavGraph(
 
         composable<Screen.BookingConfirmation> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.BookingConfirmation>()
-            // BookingConfirmationScreen can be added later
+            com.gndy.camman.presentation.screens.booking.BookingConfirmationScreen(
+                bookingId = route.bookingId,
+                onNavigateToHome = {
+                    navController.navigate(Screen.UserMain) {
+                        popUpTo(Screen.UserMain) { inclusive = true }
+                    }
+                },
+                onNavigateToBookings = {
+                    navController.navigate(Screen.UserMain) {
+                        popUpTo(Screen.UserMain) { inclusive = true }
+                    }
+                    // TODO: Navigate to bookings tab within UserMain
+                }
+            )
         }
 
         composable<Screen.Contact> {
             ContactScreen(
                 onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // ============== Review Screens ==============
+        composable<Screen.SubmitReview> { backStackEntry ->
+            val route = backStackEntry.toRoute<Screen.SubmitReview>()
+            com.gndy.camman.presentation.screens.review.ReviewSubmissionScreen(
+                photographerId = route.photographerId,
+                bookingId = route.bookingId,
+                photographerName = route.photographerName,
+                photographerImageUrl = route.photographerImageUrl,
+                serviceType = route.serviceType,
+                onNavigateBack = { navController.popBackStack() },
+                onReviewSubmitted = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable<Screen.EditReview> { backStackEntry ->
+            val route = backStackEntry.toRoute<Screen.EditReview>()
+            // Load review for editing - reuses ReviewSubmissionScreen
+            // The ViewModel handles loading the existing review
+            com.gndy.camman.presentation.screens.review.ReviewSubmissionScreen(
+                photographerId = "", // Will be loaded from review
+                bookingId = "", // Will be loaded from review
+                photographerName = "", // Will be loaded from review
+                photographerImageUrl = null,
+                serviceType = "",
+                onNavigateBack = { navController.popBackStack() },
+                onReviewSubmitted = { navController.popBackStack() }
+            )
+        }
+
+        composable<Screen.PhotographerReviews> { backStackEntry ->
+            val route = backStackEntry.toRoute<Screen.PhotographerReviews>()
+            // Full reviews screen for a photographer
+            com.gndy.camman.presentation.screens.review.PhotographerReviewsScreen(
+                photographerId = route.photographerId,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToWriteReview = { photographerId, bookingId, name, imageUrl, serviceType ->
+                    navController.navigate(
+                        Screen.SubmitReview(
+                            photographerId = photographerId,
+                            bookingId = bookingId,
+                            photographerName = name,
+                            photographerImageUrl = imageUrl,
+                            serviceType = serviceType
+                        )
+                    )
+                }
             )
         }
     }
