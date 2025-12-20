@@ -22,6 +22,7 @@ fun App() {
     CamManTheme {
         val navController = rememberNavController()
         val hasSeenOnboarding by AppPreferencesHolder.instance.hasSeenOnboarding.collectAsState()
+        val hasSeenLocationPermission by AppPreferencesHolder.instance.hasSeenLocationPermission.collectAsState()
 
         if (USE_MODULAR_NAVIGATION) {
             // ============== Modular Navigation ==============
@@ -40,8 +41,12 @@ fun App() {
             CamManNavGraph(
                 navController = navController,
                 hasSeenOnboarding = hasSeenOnboarding,
+                hasSeenLocationPermission = hasSeenLocationPermission,
                 onOnboardingComplete = {
                     AppPreferencesHolder.instance.setHasSeenOnboarding(true)
+                },
+                onLocationPermissionComplete = {
+                    AppPreferencesHolder.instance.setHasSeenLocationPermission(true)
                 }
             )
         }

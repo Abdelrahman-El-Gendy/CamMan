@@ -9,6 +9,9 @@ sealed class Screen {
     data object Splash : Screen()
 
     @Serializable
+    data object LocationPermission : Screen()  // Location permission request screen
+
+    @Serializable
     data object Onboarding : Screen()
 
     @Serializable
@@ -25,7 +28,7 @@ sealed class Screen {
 
     // ===== USER (Client) Bottom Navigation =====
     @Serializable
-    data object UserMain : Screen()  // Container for user bottom nav
+    data class UserMain(val initialTab: Int = 0) : Screen()  // Container for user bottom nav, initialTab: 0=Browse, 2=Bookings
 
     @Serializable
     data object BrowsePhotographers : Screen()  // Home tab - browse all photographers
@@ -38,6 +41,9 @@ sealed class Screen {
 
     @Serializable
     data object UserProfile : Screen()  // Profile tab
+
+    @Serializable
+    data object NearbyPhotographers : Screen()  // Nearby photographers tab
 
     // ===== PHOTOGRAPHER Bottom Navigation =====
     @Serializable

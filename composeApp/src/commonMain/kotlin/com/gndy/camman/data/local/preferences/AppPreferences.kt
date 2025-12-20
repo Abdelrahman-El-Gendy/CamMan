@@ -12,6 +12,9 @@ class AppPreferences {
     private val _hasSeenOnboarding = MutableStateFlow(false)
     val hasSeenOnboarding: StateFlow<Boolean> = _hasSeenOnboarding.asStateFlow()
 
+    private val _hasSeenLocationPermission = MutableStateFlow(false)
+    val hasSeenLocationPermission: StateFlow<Boolean> = _hasSeenLocationPermission.asStateFlow()
+
     private val _userType = MutableStateFlow<String?>(null)
     val userType: StateFlow<String?> = _userType.asStateFlow()
 
@@ -20,6 +23,10 @@ class AppPreferences {
 
     fun setHasSeenOnboarding(hasSeen: Boolean) {
         _hasSeenOnboarding.value = hasSeen
+    }
+
+    fun setHasSeenLocationPermission(hasSeen: Boolean) {
+        _hasSeenLocationPermission.value = hasSeen
     }
 
     fun setUserType(type: String) {
@@ -32,6 +39,7 @@ class AppPreferences {
 
     fun clearAll() {
         _hasSeenOnboarding.value = false
+        _hasSeenLocationPermission.value = false
         _userType.value = null
         _isLoggedIn.value = false
     }

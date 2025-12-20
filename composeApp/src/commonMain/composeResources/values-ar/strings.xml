@@ -25,6 +25,7 @@
 
     <!-- Navigation -->
     <string name="nav_browse">تصفح</string>
+    <string name="nav_nearby">القريبون</string>
     <string name="nav_bookings">الحجوزات</string>
     <string name="nav_favorites">المفضلة</string>
     <string name="nav_profile">الملف الشخصي</string>

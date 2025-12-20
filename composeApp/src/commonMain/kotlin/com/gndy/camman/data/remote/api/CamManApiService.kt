@@ -151,4 +151,64 @@ class CamManApiService(
             setBody(request)
         }
     }
+
+    // ============== Nearby Photographers ==============
+
+    /**
+     * Get photographers near a specific location
+     * @param latitude User's latitude
+     * @param longitude User's longitude
+     * @param radiusKm Search radius in kilometers
+     * @param specialty Optional photography specialty filter
+     * @param availableOnly Filter to show only available photographers
+     * @param limit Maximum number of results
+     */
+    suspend fun getNearbyPhotographers(
+        latitude: Double,
+        longitude: Double,
+        radiusKm: Int = 10,
+        specialty: String? = null,
+        availableOnly: Boolean = false,
+        limit: Int = 50
+    ): NearbyPhotographersResponse {
+        return httpClient.get("$BASE_URL/photographers/nearby") {
+            parameter("lat", latitude)
+            parameter("lng", longitude)
+            parameter("radius", radiusKm)
+            specialty?.let { parameter("specialty", it) }
+            parameter("available_only", availableOnly)
+            parameter("limit", limit)
+        }.body()
+    }
+
+    /**
+     * Get a specific photographer with distance information
+     * @param photographerId The photographer's ID
+     * @param latitude User's latitude for distance calculation
+     * @param longitude User's longitude for distance calculation
+     */
+    suspend fun getPhotographerWithDistance(
+        photographerId: String,
+        latitude: Double,
+        longitude: Double
+    ): NearbyPhotographerDto {
+        return httpClient.get("$BASE_URL/photographers/$photographerId/distance") {
+            parameter("lat", latitude)
+            parameter("lng", longitude)
+        }.body()
+    }
+
+    /**
+     * Get distance to a specific photographer
+     */
+    suspend fun getPhotographerDistance(
+        photographerId: String,
+        latitude: Double,
+        longitude: Double
+    ): PhotographerDistanceResponse {
+        return httpClient.get("$BASE_URL/photographers/$photographerId/distance-info") {
+            parameter("lat", latitude)
+            parameter("lng", longitude)
+        }.body()
+    }
 }

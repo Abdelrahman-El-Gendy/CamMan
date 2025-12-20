@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Search
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.Search
@@ -38,6 +40,13 @@ sealed class UserBottomNavItem(
         unselectedIcon = Icons.Outlined.Search
     )
 
+    data object Nearby : UserBottomNavItem(
+        route = "nearby_photographers",
+        titleRes = Res.string.nav_nearby,
+        selectedIcon = Icons.Filled.LocationOn,
+        unselectedIcon = Icons.Outlined.LocationOn
+    )
+
     data object Bookings : UserBottomNavItem(
         route = "user_bookings",
         titleRes = Res.string.nav_bookings,
@@ -60,7 +69,7 @@ sealed class UserBottomNavItem(
     )
 
     companion object {
-        val items = listOf(Browse, Bookings, Favorites, Profile)
+        val items = listOf(Browse, Nearby, Bookings, Favorites, Profile)
     }
 }
 

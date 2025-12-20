@@ -85,7 +85,6 @@ fun PhotographerMainScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Refresh profile when coming back from EditProfile with changes
     LaunchedEffect(profileUpdated) {
         if (profileUpdated) {
             viewModel.refreshProfile()
@@ -198,7 +197,6 @@ fun PhotographerDashboardScreen(
         contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Welcome Header
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -252,7 +250,6 @@ fun PhotographerDashboardScreen(
                         )
                     }
 
-                    // Availability Badge
                     Box(
                         modifier = Modifier
                             .background(
@@ -273,7 +270,6 @@ fun PhotographerDashboardScreen(
             }
         }
 
-        // Availability Toggle Card
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -315,7 +311,6 @@ fun PhotographerDashboardScreen(
             }
         }
 
-        // Quick Stats
         item {
             Text(
                 text = "Quick Stats",
@@ -369,7 +364,6 @@ fun PhotographerDashboardScreen(
             }
         }
 
-        // Your Profile Summary
         item {
             Text(
                 text = "Your Profile",
@@ -393,7 +387,6 @@ fun PhotographerDashboardScreen(
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    // Bio
                     if (!profile?.bio.isNullOrBlank()) {
                         Text(
                             text = profile?.bio ?: "",
@@ -404,7 +397,6 @@ fun PhotographerDashboardScreen(
                         Spacer(modifier = Modifier.height(12.dp))
                     }
 
-                    // Location
                     if (!profile?.location.isNullOrBlank()) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
@@ -423,7 +415,6 @@ fun PhotographerDashboardScreen(
                         Spacer(modifier = Modifier.height(12.dp))
                     }
 
-                    // Specialties
                     if (!profile?.specialties.isNullOrEmpty()) {
                         LazyRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -448,7 +439,6 @@ fun PhotographerDashboardScreen(
                         Spacer(modifier = Modifier.height(12.dp))
                     }
 
-                    // Starting Price
                     if ((profile?.startingPrice ?: 0.0) > 0) {
                         Text(
                             text = "Starting from $${profile?.startingPrice?.toInt() ?: 0} ${profile?.currency ?: "USD"}",
@@ -461,7 +451,6 @@ fun PhotographerDashboardScreen(
             }
         }
 
-        // Tips Section
         item {
             Text(
                 text = "Tips to Get More Bookings",
@@ -488,7 +477,7 @@ fun PhotographerDashboardScreen(
         }
 
         item {
-            Spacer(modifier = Modifier.height(80.dp)) // Bottom padding
+            Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }
@@ -599,7 +588,6 @@ fun PhotographerPortfolioScreen(onNavigateToAlbum: (String) -> Unit) {
 fun PhotographerBookingsScreen() {
     PhotographerNotificationsScreen(
         onNotificationClick = { bookingId ->
-            // Navigate to booking detail when clicked
         }
     )
 }
@@ -615,111 +603,10 @@ fun PhotographerProfileScreen(
         contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Profile Header
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    // Cover Image
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .background(Gold.copy(alpha = 0.2f))
-                    ) {
-                        if (!profile?.coverImageUrl.isNullOrBlank()) {
-                            AsyncImage(
-                                model = profile?.coverImageUrl,
-                                contentDescription = null,
-                                modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-                    }
-
-                    // Profile Info
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        // Profile Image (overlapping cover)
-                        Box(
-                            modifier = Modifier
-                                .offset(y = (-50).dp)
-                                .size(80.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.surfaceVariant)
-                                .then(
-                                    Modifier.background(
-                                        MaterialTheme.colorScheme.surface,
-                                        CircleShape
-                                    )
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            if (!profile?.profileImageUrl.isNullOrBlank()) {
-                                AsyncImage(
-                                    model = profile?.profileImageUrl,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .clip(CircleShape),
-                                    contentScale = ContentScale.Crop
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Default.Person,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(40.dp),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height((-40).dp))
-
-                        Text(
-                            text = profile?.fullName ?: "Your Name",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Text(
-                            text = profile?.email ?: "",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        OutlinedButton(
-                            onClick = onEditProfile,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Edit Profile")
-                        }
-                    }
-                }
-            }
+            ProfileHeader(profile, onEditProfile)
         }
 
-        // Profile Details
         item {
             ProfileDetailCard(
                 title = "Contact Information",
@@ -743,7 +630,6 @@ fun PhotographerProfileScreen(
             )
         }
 
-        // Social Links
         if (!profile?.website.isNullOrBlank() || !profile?.instagram.isNullOrBlank() || !profile?.facebook.isNullOrBlank()) {
             item {
                 ProfileDetailCard(
@@ -757,28 +643,94 @@ fun PhotographerProfileScreen(
             }
         }
 
-        // Sign Out Button
         item {
-            Button(
-                onClick = onSignOut,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
-                ),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Logout,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(Res.string.sign_out))
-            }
+            SignOutButton(onSignOut)
         }
 
         item {
             Spacer(modifier = Modifier.height(80.dp))
+        }
+    }
+}
+
+@Composable
+private fun ProfileHeader(profile: PhotographerRegistration?, onEditProfile: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            ) {
+                AsyncImage(
+                    model = profile?.coverImageUrl,
+                    contentDescription = "Cover Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.3f))
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .offset(y = (-80).dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AsyncImage(
+                    model = profile?.profileImageUrl,
+                    contentDescription = "Profile Image",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(4.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = profile?.fullName ?: "Your Name",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = profile?.email ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedButton(
+                    onClick = onEditProfile,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Edit Profile")
+                }
+            }
         }
     }
 }
@@ -791,9 +743,7 @@ private fun ProfileDetailCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -813,8 +763,9 @@ private fun ProfileDetailCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = label,
@@ -827,11 +778,33 @@ private fun ProfileDetailCard(
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, fill = false),
+                        modifier = Modifier.padding(start = 16.dp),
                         textAlign = androidx.compose.ui.text.style.TextAlign.End
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SignOutButton(onSignOut: () -> Unit) {
+    Button(
+        onClick = onSignOut,
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.error,
+            contentColor = MaterialTheme.colorScheme.onError
+        ),
+        shape = RoundedCornerShape(12.dp),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
+    ) {
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.Logout,
+            contentDescription = null,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(stringResource(Res.string.sign_out))
     }
 }

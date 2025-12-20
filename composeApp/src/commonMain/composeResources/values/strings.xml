@@ -29,6 +29,7 @@
 
     <!-- Navigation -->
     <string name="nav_browse">Browse</string>
+    <string name="nav_nearby">Nearby</string>
     <string name="nav_bookings">Bookings</string>
     <string name="nav_favorites">Favorites</string>
     <string name="nav_profile">Profile</string>

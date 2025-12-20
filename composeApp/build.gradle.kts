@@ -40,6 +40,9 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
+            
+            // Google Play Services Location for Nearby Photographers feature
+            implementation("com.google.android.gms:play-services-location:21.0.1")
         }
 
         commonMain.dependencies {
@@ -99,6 +102,24 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+        }
+        
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.kotlin.testJunit)
+            }
+        }
+        
+        val androidInstrumentedTest by getting {
+            dependencies {
+                implementation(libs.androidx.testExt.junit)
+                implementation(libs.androidx.espresso.core)
+                implementation("androidx.compose.ui:ui-test-junit4:1.7.5")
+                implementation("androidx.compose.ui:ui-test-manifest:1.7.5")
+                implementation("androidx.navigation:navigation-testing:2.8.4")
+            }
         }
     }
 }
@@ -113,6 +134,9 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        
+        // Test instrumentation runner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Filter ABIs - only include 64-bit architectures
         ndk {
@@ -165,6 +189,7 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.5")
     add("kspAndroid", libs.room.compiler)
     add("kspIosArm64", libs.room.compiler)
     add("kspIosSimulatorArm64", libs.room.compiler)

@@ -13,23 +13,43 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.gndy.camman.presentation.navigation.UserBottomNavItem
+import com.gndy.camman.presentation.screens.nearby.NearbyPhotographersScreen
 import com.gndy.camman.presentation.theme.Gold
 import org.jetbrains.compose.resources.stringResource
 import com.gndy.camman.resources.*
 
+/**
+ * Tab indices for UserMain bottom navigation
+ */
+object UserMainTabs {
+    const val BROWSE = 0
+    const val NEARBY = 1
+    const val BOOKINGS = 2
+    const val FAVORITES = 3
+    const val PROFILE = 4
+}
 
 @Composable
 fun UserMainScreen(
     onNavigateToPhotographer: (String) -> Unit,
-    onNavigateToSignIn: () -> Unit
+    onNavigateToSignIn: () -> Unit,
+    initialTab: Int = UserMainTabs.BROWSE
 ) {
-    var selectedTab by rememberSaveable { mutableStateOf(0) }
+    var selectedTab by rememberSaveable { mutableStateOf(initialTab) }
+    
+    // Update tab if initialTab changes (e.g., when navigating from booking confirmation)
+    LaunchedEffect(initialTab) {
+        if (initialTab != UserMainTabs.BROWSE) {
+            selectedTab = initialTab
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -66,10 +86,16 @@ fun UserMainScreen(
                 0 -> BrowsePhotographersScreen(
                     onNavigateToPhotographer = onNavigateToPhotographer
                 )
+                
+                1 -> NearbyPhotographersScreen(
+                    onNavigateToPhotographer = onNavigateToPhotographer,
+                    onNavigateToChat = { /* TODO: Implement chat navigation */ },
+                    onNavigateToBooking = { /* TODO: Implement booking navigation */ }
+                )
 
-                1 -> UserBookingsScreenContent()
-                2 -> FavoritesScreen()
-                3 -> UserProfileScreen(onSignOut = onNavigateToSignIn)
+                2 -> UserBookingsScreenContent()
+                3 -> FavoritesScreen()
+                4 -> UserProfileScreen(onSignOut = onNavigateToSignIn)
             }
         }
     }
