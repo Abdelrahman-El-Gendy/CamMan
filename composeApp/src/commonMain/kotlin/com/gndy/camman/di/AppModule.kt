@@ -200,7 +200,7 @@ val sharedModule = module {
 
     // ViewModels - Auth (Supabase - supports multiple users)
     viewModel { SignInViewModel(get(), get()) }
-    viewModel { SignUpViewModel(get(), get()) }
+    viewModel { SignUpViewModel(get(), get(), get()) } // signUpUseCase, getAuthStateUseCase, userRoleRepository
     viewModel { ForgotPasswordViewModel(get()) }
     
     // ViewModels - Onboarding/Role Selection
