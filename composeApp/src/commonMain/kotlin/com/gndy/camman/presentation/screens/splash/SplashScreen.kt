@@ -32,8 +32,11 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SplashScreen(
     onNavigateToOnboarding: () -> Unit,
-    onNavigateToUserTypeSelection: () -> Unit,
-    hasSeenOnboarding: Boolean = false
+    onNavigateToUserTypeSelection: () -> Unit,  // Legacy - redirects to RoleSelection
+    onNavigateToRoleSelection: () -> Unit = onNavigateToUserTypeSelection,
+    onNavigateToSignIn: () -> Unit,
+    hasSeenOnboarding: Boolean = false,
+    isAuthenticated: Boolean = false
 ) {
     val alpha = remember { Animatable(0f) }
     val scale = remember { Animatable(0.8f) }
@@ -51,11 +54,14 @@ fun SplashScreen(
 
         delay(1000)
 
-        // Navigate based on whether user has seen onboarding
-        if (hasSeenOnboarding) {
-            onNavigateToUserTypeSelection()
-        } else {
-            onNavigateToOnboarding()
+        // Navigation priority:
+        // 1. If authenticated → RoleSelection (validates/selects role)
+        // 2. If not authenticated but seen onboarding → SignIn
+        // 3. If not seen onboarding → Onboarding
+        when {
+            isAuthenticated -> onNavigateToRoleSelection()
+            hasSeenOnboarding -> onNavigateToSignIn()
+            else -> onNavigateToOnboarding()
         }
     }
 

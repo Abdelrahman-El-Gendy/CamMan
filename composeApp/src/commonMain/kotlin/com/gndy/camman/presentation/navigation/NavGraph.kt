@@ -1,11 +1,17 @@
 package com.gndy.camman.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.gndy.camman.util.WhatsAppUtils
 import com.gndy.camman.presentation.screens.auth.authscreens.ForgotPasswordScreen
 import com.gndy.camman.presentation.screens.auth.authscreens.SignInScreen
 import com.gndy.camman.presentation.screens.auth.authscreens.SignUpScreen
@@ -21,9 +27,14 @@ import com.gndy.camman.presentation.screens.photographer.PhotographerMainScreen
 import com.gndy.camman.presentation.screens.portfolio.AlbumDetailScreen
 import com.gndy.camman.presentation.screens.portfolio.PhotoPreviewScreen
 import com.gndy.camman.presentation.screens.portfolio.PortfolioAlbumsScreen
+import com.gndy.camman.presentation.screens.chat.ChatScreen
+import com.gndy.camman.presentation.screens.chat.ConversationsListScreen
 import com.gndy.camman.presentation.screens.splash.SplashScreen
 import com.gndy.camman.presentation.screens.user.PhotographerDetailScreen
 import com.gndy.camman.presentation.screens.user.UserMainScreen
+import com.gndy.camman.presentation.screens.user.FilterScreen
+import com.gndy.camman.presentation.screens.onboarding.RoleSelectionScreen
+import com.gndy.camman.presentation.permission.rememberCrossPlatformLocationPermissionState
 
 @Composable
 fun CamManNavGraph(
@@ -33,6 +44,9 @@ fun CamManNavGraph(
     onOnboardingComplete: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    // URI handler for opening external links (WhatsApp, etc.)
+    val uriHandler = LocalUriHandler.current
+    
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -40,6 +54,10 @@ fun CamManNavGraph(
     ) {
         // ============== Splash Screen ==============
         composable<Screen.Splash> {
+            // Check if user is authenticated using Koin
+            val authRepository: com.gndy.camman.domain.repository.AuthRepository = org.koin.compose.koinInject()
+            val isAuthenticated = authRepository.isLoggedIn
+            
             SplashScreen(
                 onNavigateToOnboarding = {
                     navController.navigate(Screen.Onboarding) {
@@ -47,11 +65,23 @@ fun CamManNavGraph(
                     }
                 },
                 onNavigateToUserTypeSelection = {
-                    navController.navigate(Screen.UserTypeSelection) {
+                    // Legacy - redirect to RoleSelection
+                    navController.navigate(Screen.RoleSelection) {
                         popUpTo(Screen.Splash) { inclusive = true }
                     }
                 },
-                hasSeenOnboarding = hasSeenOnboarding
+                onNavigateToRoleSelection = {
+                    navController.navigate(Screen.RoleSelection) {
+                        popUpTo(Screen.Splash) { inclusive = true }
+                    }
+                },
+                onNavigateToSignIn = {
+                    navController.navigate(Screen.SignIn) {
+                        popUpTo(Screen.Splash) { inclusive = true }
+                    }
+                },
+                hasSeenOnboarding = hasSeenOnboarding,
+                isAuthenticated = isAuthenticated
             )
         }
 
@@ -60,13 +90,15 @@ fun CamManNavGraph(
             OnboardingScreen(
                 onComplete = {
                     onOnboardingComplete()
-                    navController.navigate(Screen.UserTypeSelection) {
+                    // Navigate to SignIn after onboarding (auth required)
+                    navController.navigate(Screen.SignIn) {
                         popUpTo(Screen.Onboarding) { inclusive = true }
                     }
                 },
                 onSkip = {
                     onOnboardingComplete()
-                    navController.navigate(Screen.UserTypeSelection) {
+                    // Navigate to SignIn after onboarding (auth required)
+                    navController.navigate(Screen.SignIn) {
                         popUpTo(Screen.Onboarding) { inclusive = true }
                     }
                 }
@@ -93,7 +125,8 @@ fun CamManNavGraph(
         composable<Screen.SignIn> {
             SignInScreen(
                 onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
+                    // After successful login, go to RoleSelection (validates existing role)
+                    navController.navigate(Screen.RoleSelection) {
                         popUpTo(Screen.SignIn) { inclusive = true }
                     }
                 },
@@ -102,19 +135,42 @@ fun CamManNavGraph(
                 },
                 onNavigateToForgotPassword = {
                     navController.navigate(Screen.ForgotPassword)
-                }
+                },
+                onContinueAsGuest = null  // No guest mode - auth is required
             )
         }
 
         composable<Screen.SignUp> {
             SignUpScreen(
                 onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
-                        popUpTo(Screen.SignIn) { inclusive = true }
+                    // After successful signup, go to RoleSelection (mandatory)
+                    navController.navigate(Screen.RoleSelection) {
+                        popUpTo(Screen.SignUp) { inclusive = true }
                     }
                 },
                 onNavigateToSignIn = {
                     navController.popBackStack()
+                }
+            )
+        }
+        
+        // ============== Role Selection (Mandatory First Launch) ==============
+        composable<Screen.RoleSelection> {
+            RoleSelectionScreen(
+                onNavigateToClientHome = {
+                    navController.navigate(Screen.UserMain) {
+                        popUpTo(Screen.RoleSelection) { inclusive = true }
+                    }
+                },
+                onNavigateToPhotographerHome = {
+                    navController.navigate(Screen.PhotographerMain) {
+                        popUpTo(Screen.RoleSelection) { inclusive = true }
+                    }
+                },
+                onNavigateToSignIn = {
+                    navController.navigate(Screen.SignIn) {
+                        popUpTo(Screen.RoleSelection) { inclusive = true }
+                    }
                 }
             )
         }
@@ -127,14 +183,59 @@ fun CamManNavGraph(
             )
         }
 
+        composable<Screen.Filter> {
+            FilterScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onApplyFilters = { filters ->
+                    // Serialize filter state to JSON string and set in savedStateHandle
+                    val filtersJson = kotlinx.serialization.json.Json.encodeToString(
+                        com.gndy.camman.presentation.screens.user.FilterState.serializer(),
+                        filters
+                    )
+                    navController.previousBackStackEntry?.savedStateHandle?.set("filters_json", filtersJson)
+                    navController.popBackStack()
+                }
+            )
+        }
+
         // ============== User (Client) Main Screen with Bottom Nav ==============
         composable<Screen.UserMain> {
+            // Store a reference to the permission result callback
+            var permissionResultCallback: ((Boolean) -> Unit)? by remember { mutableStateOf(null) }
+            
+            // Setup cross-platform location permission handler
+            val locationPermissionHandler = rememberCrossPlatformLocationPermissionState { isGranted ->
+                // Permission result callback - notify the caller
+                permissionResultCallback?.invoke(isGranted)
+                permissionResultCallback = null
+            }
+            
             UserMainScreen(
                 onNavigateToPhotographer = { photographerId ->
                     navController.navigate(Screen.PhotographerDetail(photographerId))
                 },
-                onNavigateToSignIn = {
-                    navController.navigate(Screen.UserTypeSelection) {
+                onNavigateToChat = { photographerId ->
+                    navController.navigate(Screen.Chat(photographerId = photographerId))
+                },
+                onNavigateToBooking = { photographerId ->
+                    navController.navigate(Screen.Booking(packageId = "default", photographerId = photographerId))
+                },
+                onNavigateToConversations = {
+                    navController.navigate(Screen.ConversationsList)
+                },
+                onNavigateToFilter = {
+                    navController.navigate(Screen.Filter)
+                },
+                onRequestLocationPermission = { callback ->
+                    permissionResultCallback = callback
+                    locationPermissionHandler.requestPermission()
+                },
+                onOpenLocationSettings = {
+                    locationPermissionHandler.openSettings()
+                },
+                // Navigate to SignIn after sign out
+                onSignOut = {
+                    navController.navigate(Screen.SignIn) {
                         popUpTo(Screen.UserMain) { inclusive = true }
                     }
                 }
@@ -158,6 +259,9 @@ fun CamManNavGraph(
                 },
                 onNavigateToEditProfile = {
                     navController.navigate(Screen.EditProfile)
+                },
+                onNavigateToChat = { conversationId ->
+                    navController.navigate(Screen.Chat(conversationId = conversationId))
                 },
                 profileUpdated = profileUpdated,
                 onProfileUpdateHandled = {
@@ -195,8 +299,26 @@ fun CamManNavGraph(
                 onNavigateToContact = { photographerId ->
                     navController.navigate(Screen.Contact)
                 },
+                onNavigateToChat = { photographerId ->
+                    // User is authenticated, go directly to chat
+                    navController.navigate(Screen.Chat(photographerId = photographerId))
+                },
+                onWhatsAppClick = { phoneNumber, photographerName ->
+                    val message = WhatsAppUtils.generatePhotographerMessage(photographerName)
+                    val whatsappUri = WhatsAppUtils.generateWhatsAppUri(phoneNumber, message)
+                    try {
+                        uriHandler.openUri(whatsappUri)
+                    } catch (e: Exception) {
+                        // Handle error - WhatsApp not installed or URI failed
+                        e.printStackTrace()
+                    }
+                },
                 onNavigateToPortfolio = { photographerId ->
                     navController.navigate(Screen.PortfolioAlbums)
+                },
+                onNavigateToBooking = { photographerId ->
+                    // User is authenticated, go directly to booking
+                    navController.navigate(Screen.Booking(packageId = "default", photographerId = photographerId))
                 }
             )
         }
@@ -367,6 +489,24 @@ fun CamManNavGraph(
                         )
                     )
                 }
+            )
+        }
+
+        // ============== Chat Screens ==============
+        composable<Screen.ConversationsList> {
+            ConversationsListScreen(
+                onNavigateToChat = { conversationId ->
+                    navController.navigate(Screen.Chat(conversationId = conversationId))
+                }
+            )
+        }
+
+        composable<Screen.Chat> { backStackEntry ->
+            val route = backStackEntry.toRoute<Screen.Chat>()
+            ChatScreen(
+                conversationId = route.conversationId,
+                photographerId = route.photographerId,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }

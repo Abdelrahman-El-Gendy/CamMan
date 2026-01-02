@@ -22,8 +22,17 @@ class UserEntryBuilder : NavEntryBuilder {
                 onNavigateToPhotographer = { photographerId ->
                     navController.navigate(Screen.PhotographerDetail(photographerId))
                 },
-                onNavigateToSignIn = {
-                    navController.navigate(Screen.UserTypeSelection) {
+                onNavigateToChat = { photographerId ->
+                    navController.navigate(Screen.Chat(photographerId = photographerId))
+                },
+                onNavigateToBooking = { photographerId ->
+                    navController.navigate(Screen.Booking(packageId = "default", photographerId = photographerId))
+                },
+                onNavigateToConversations = {
+                    navController.navigate(Screen.ConversationsList)
+                },
+                onSignOut = {
+                    navController.navigate(Screen.SignIn) {
                         popUpTo(Screen.UserMain) { inclusive = true }
                     }
                 }

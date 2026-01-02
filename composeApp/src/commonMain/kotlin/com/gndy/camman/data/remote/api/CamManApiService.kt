@@ -151,4 +151,33 @@ class CamManApiService(
             setBody(request)
         }
     }
+
+    // ============== Nearby Photographers ==============
+
+    suspend fun getNearbyPhotographers(
+        latitude: Double,
+        longitude: Double,
+        radiusKm: Int = 10,
+        specialty: String? = null,
+        availableOnly: Boolean = false
+    ): NearbyPhotographersResponse {
+        return httpClient.get("$BASE_URL/photographers/nearby") {
+            parameter("lat", latitude)
+            parameter("lng", longitude)
+            parameter("radius", radiusKm)
+            specialty?.let { parameter("specialty", it) }
+            parameter("available_only", availableOnly)
+        }.body()
+    }
+
+    suspend fun getPhotographerWithDistance(
+        photographerId: String,
+        latitude: Double,
+        longitude: Double
+    ): NearbyPhotographerDto {
+        return httpClient.get("$BASE_URL/photographers/$photographerId/distance") {
+            parameter("lat", latitude)
+            parameter("lng", longitude)
+        }.body()
+    }
 }

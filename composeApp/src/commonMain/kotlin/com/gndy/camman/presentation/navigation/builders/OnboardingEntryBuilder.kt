@@ -3,10 +3,12 @@ package com.gndy.camman.presentation.navigation.builders
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.gndy.camman.domain.repository.AuthRepository
 import com.gndy.camman.presentation.navigation.Screen
 import com.gndy.camman.presentation.screens.onboarding.OnboardingScreen
 import com.gndy.camman.presentation.screens.onboarding.UserTypeSelectionScreen
 import com.gndy.camman.presentation.screens.splash.SplashScreen
+import org.koin.compose.koinInject
 
 /**
  * Entry builder for the Onboarding feature module.
@@ -23,6 +25,10 @@ class OnboardingEntryBuilder(
     override fun NavGraphBuilder.buildEntries(navController: NavHostController) {
         // Splash Screen Entry
         composable<Screen.Splash> {
+            // Check if user is authenticated
+            val authRepository: AuthRepository = koinInject()
+            val isAuthenticated = authRepository.isLoggedIn
+            
             SplashScreen(
                 onNavigateToOnboarding = {
                     navController.navigate(Screen.Onboarding) {
@@ -34,7 +40,13 @@ class OnboardingEntryBuilder(
                         popUpTo(Screen.Splash) { inclusive = true }
                     }
                 },
-                hasSeenOnboarding = hasSeenOnboarding
+                onNavigateToSignIn = {
+                    navController.navigate(Screen.SignIn) {
+                        popUpTo(Screen.Splash) { inclusive = true }
+                    }
+                },
+                hasSeenOnboarding = hasSeenOnboarding,
+                isAuthenticated = isAuthenticated
             )
         }
 
@@ -43,13 +55,15 @@ class OnboardingEntryBuilder(
             OnboardingScreen(
                 onComplete = {
                     onOnboardingComplete()
-                    navController.navigate(Screen.UserTypeSelection) {
+                    // Navigate to SignIn after onboarding (auth required)
+                    navController.navigate(Screen.SignIn) {
                         popUpTo(Screen.Onboarding) { inclusive = true }
                     }
                 },
                 onSkip = {
                     onOnboardingComplete()
-                    navController.navigate(Screen.UserTypeSelection) {
+                    // Navigate to SignIn after onboarding (auth required)
+                    navController.navigate(Screen.SignIn) {
                         popUpTo(Screen.Onboarding) { inclusive = true }
                     }
                 }

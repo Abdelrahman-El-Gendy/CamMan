@@ -20,7 +20,12 @@ data class Booking(
     val paymentMethod: PaymentMethod?,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
-    val addOns: List<BookingAddOn> = emptyList()
+    val addOns: List<BookingAddOn> = emptyList(),
+    // Photographer info for chat/contact features
+    val photographerId: String = "",
+    val photographerName: String? = null,
+    val photographerPhone: String? = null,
+    val photographerEmail: String? = null
 )
 
 data class ClientInfo(

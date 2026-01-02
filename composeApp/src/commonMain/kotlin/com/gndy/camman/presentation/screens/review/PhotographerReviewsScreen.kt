@@ -67,7 +67,7 @@ fun PhotographerReviewsScreen(
                         statistics?.let { stats ->
                             if (stats.shouldShowPublicRating()) {
                                 Text(
-                                    text = "${stats.totalReviews} reviews • ${String.format("%.1f", stats.averageRating)} average",
+                                    text = "${stats.totalReviews} reviews • ${((stats.averageRating * 10).toInt() / 10.0)} average",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

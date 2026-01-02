@@ -40,6 +40,13 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
+            
+            // Google Play Services Location for Nearby Photographers feature
+            implementation("com.google.android.gms:play-services-location:21.0.1")
+            
+            // Google Maps
+            implementation(libs.google.maps.compose)
+            implementation(libs.google.maps.services)
         }
 
         commonMain.dependencies {
@@ -70,6 +77,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.websockets)
 
             // Kotlinx
             implementation(libs.kotlinx.coroutines.core)
@@ -84,9 +92,14 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
 
-            // Firebase Auth (GitLive KMP SDK)
+            // Firebase Auth (GitLive KMP SDK) - kept for migration, can be removed later
             implementation(libs.firebase.auth)
             implementation(libs.firebase.common)
+
+            // Supabase KMP SDK
+            implementation(libs.supabase.auth)
+            implementation(libs.supabase.postgrest)
+            implementation(libs.supabase.realtime)
 
             // Image Picker
             implementation(libs.peekaboo.ui)
@@ -113,6 +126,8 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        manifestPlaceholders["MAPS_API_KEY"] = "" // Replace with real key
 
         // Filter ABIs - only include 64-bit architectures
         ndk {

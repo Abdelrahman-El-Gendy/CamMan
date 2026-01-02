@@ -1,48 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="96dp"
-    android:height="96dp"
-    android:viewportWidth="96"
-    android:viewportHeight="96">
-
-    <!-- Camera Body -->
-    <path
-        android:fillColor="#D4AF37"
-        android:pathData="M14,32 L14,70 Q14,76 20,76 L76,76 Q82,76 82,70 L82,32 Q82,26 76,26 L66,26 L62,18 L34,18 L30,26 L20,26 Q14,26 14,32 Z" />
-
-    <!-- Camera Lens Outer Ring -->
-    <path
-        android:fillColor="#1A1A1A"
-        android:pathData="M48,51 m-20,0 a20,20 0,1 1,40 0 a20,20 0,1 1,-40 0" />
-
-    <!-- Camera Lens Middle Ring -->
-    <path
-        android:fillColor="#D4AF37"
-        android:pathData="M48,51 m-15,0 a15,15 0,1 1,30 0 a15,15 0,1 1,-30 0" />
-
-    <!-- Camera Lens Inner -->
-    <path
-        android:fillColor="#1A1A1A"
-        android:pathData="M48,51 m-10,0 a10,10 0,1 1,20 0 a10,10 0,1 1,-20 0" />
-
-    <!-- Camera Lens Center -->
-    <path
-        android:fillColor="#2A2A2A"
-        android:pathData="M48,51 m-5,0 a5,5 0,1 1,10 0 a5,5 0,1 1,-10 0" />
-
-    <!-- Lens Highlight -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M42,45 a3,3 0,1 1,6 0 a3,3 0,1 1,-6 0" />
-
-    <!-- Flash -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M68,34 L76,34 L76,42 L68,42 Z" />
-
-    <!-- Viewfinder -->
-    <path
-        android:fillColor="#1A1A1A"
-        android:pathData="M40,22 L56,22 Q58,22 58,24 L58,26 L38,26 L38,24 Q38,22 40,22 Z" />
-
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+  
+  <!-- Background Circle (Optional, useful for app icon) -->
+  <path
+      android:pathData="M256,512C114.6,512 0,397.4 0,256S114.6,0 256,0s256,114.6 256,256S397.4,512 256,512z"
+      android:fillColor="#121212"/>
+      
+  <!-- Golden Ring / Shutter Frame -->
+  <path
+      android:pathData="M256,80c-97.2,0 -176,78.8 -176,176s78.8,176 176,176s176,-78.8 176,-176S353.2,80 256,80zM256,400c-81.7,0 -148,-66.3 -148,-148S174.3,104 256,104s148,66.3 148,148S337.7,400 256,400z"
+      android:fillColor="#FFD700"/>
+      
+  <!-- Camera Shutter Blades -->
+  <path
+      android:pathData="M256,152L290,220L360,230L256,152z"
+      android:fillColor="#FFC107"/>
+  <path
+      android:pathData="M360,230L340,300L256,360L360,230z"
+      android:fillColor="#FFB300"/>
+  <path
+      android:pathData="M256,360L190,320L152,256L256,360z"
+      android:fillColor="#FFA000"/>
+  <path
+      android:pathData="M152,256L170,180L256,152L152,256z"
+      android:fillColor="#FFECB3"/>
+      
+  <!-- Center Lens / Aperture -->
+  <path
+      android:pathData="M256,256m-48,0a48,48 0,1 1,96 0a48,48 0,1 1,-96 0"
+      android:fillColor="#121212"/>
+      
+  <!-- 'Man' / User Head Abstract in center (Subtle) -->
+  <path
+      android:pathData="M256,236c-11,0 -20,9 -20,20s9,20 20,20s20,-9 20,-20S267,236 256,236z"
+      android:fillColor="#FFD700"/>
+      
+  <!-- Flash / Highlight -->
+  <path
+      android:pathData="M350,130L370,110"
+      android:strokeWidth="12"
+      android:strokeColor="#FFFFFF"
+      android:strokeLineCap="round"/>
 </vector>

@@ -25,6 +25,7 @@
 
     <!-- Navigation -->
     <string name="nav_browse">Explorar</string>
+    <string name="nav_nearby">Cercanos</string>
     <string name="nav_bookings">Reservas</string>
     <string name="nav_favorites">Favoritos</string>
     <string name="nav_profile">Perfil</string>

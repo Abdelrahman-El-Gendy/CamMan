@@ -3,27 +3,44 @@ package com.gndy.camman.di
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.gndy.camman.data.local.CamManDatabase
 import com.gndy.camman.data.local.DatabaseFactory
+import com.gndy.camman.data.chat.ChatWebSocketService
+import com.gndy.camman.data.remote.SupabaseConfig
 import com.gndy.camman.data.remote.api.CamManApiService
 import com.gndy.camman.data.remote.createHttpClient
 import com.gndy.camman.data.repository.AlbumRepositoryImpl
 import com.gndy.camman.data.repository.BookingRepositoryImpl
+import com.gndy.camman.data.repository.ChatRepositoryImpl
 import com.gndy.camman.data.repository.ClientBookingRepositoryImpl
+import com.gndy.camman.data.repository.LocationRepositoryImpl
+import com.gndy.camman.data.repository.NearbyPhotographersRepositoryImpl
 import com.gndy.camman.data.repository.PackageRepositoryImpl
 import com.gndy.camman.data.repository.PaymentRepositoryImpl
 import com.gndy.camman.data.repository.PhotoRepositoryImpl
 import com.gndy.camman.data.repository.PhotographerRepositoryImpl
 import com.gndy.camman.data.repository.ProfileRepositoryImpl
 import com.gndy.camman.data.repository.ReviewRepositoryImpl
+import com.gndy.camman.data.repository.SupabaseAuthRepositoryImpl
+import com.gndy.camman.data.repository.UserRoleRepositoryImpl
 import com.gndy.camman.domain.repository.AlbumRepository
+import com.gndy.camman.domain.repository.AuthRepository
 import com.gndy.camman.domain.repository.BookingRepository
+import com.gndy.camman.domain.repository.ChatRepository
+import com.gndy.camman.domain.repository.LocationRepository
+import com.gndy.camman.domain.repository.NearbyPhotographersRepository
 import com.gndy.camman.domain.repository.PackageRepository
 import com.gndy.camman.domain.repository.PaymentRepository
 import com.gndy.camman.domain.repository.PhotoRepository
 import com.gndy.camman.domain.repository.PhotographerRepository
 import com.gndy.camman.domain.repository.ProfileRepository
 import com.gndy.camman.domain.repository.ReviewRepository
+import com.gndy.camman.domain.repository.UserRoleRepository
 import com.gndy.camman.domain.usecase.album.GetAlbumPhotosUseCase
 import com.gndy.camman.domain.usecase.album.GetAlbumsUseCase
+import com.gndy.camman.domain.usecase.auth.GetAuthStateUseCase
+import com.gndy.camman.domain.usecase.auth.ResetPasswordUseCase
+import com.gndy.camman.domain.usecase.auth.SignInUseCase
+import com.gndy.camman.domain.usecase.auth.SignOutUseCase
+import com.gndy.camman.domain.usecase.auth.SignUpUseCase
 import com.gndy.camman.domain.usecase.booking.CreateBookingUseCase
 import com.gndy.camman.domain.usecase.packages.GetPackagesUseCase
 import com.gndy.camman.domain.usecase.payment.SubmitPaymentUseCase
@@ -33,6 +50,9 @@ import com.gndy.camman.domain.usecase.review.MarkReviewHelpfulUseCase
 import com.gndy.camman.domain.usecase.review.RespondToReviewUseCase
 import com.gndy.camman.domain.usecase.review.SubmitReviewUseCase
 import com.gndy.camman.domain.usecase.review.UpdateReviewUseCase
+import com.gndy.camman.presentation.screens.auth.authviewmodel.ForgotPasswordViewModel
+import com.gndy.camman.presentation.screens.auth.authviewmodel.SignInViewModel
+import com.gndy.camman.presentation.screens.auth.authviewmodel.SignUpViewModel
 import com.gndy.camman.presentation.screens.booking.BookingViewModel
 import com.gndy.camman.presentation.screens.contact.ContactViewModel
 import com.gndy.camman.presentation.screens.home.HomeViewModel
@@ -45,18 +65,22 @@ import com.gndy.camman.presentation.screens.portfolio.AlbumDetailViewModel
 import com.gndy.camman.presentation.screens.portfolio.PhotoPreviewViewModel
 import com.gndy.camman.presentation.screens.portfolio.PortfolioAlbumsViewModel
 import com.gndy.camman.presentation.screens.review.ReviewViewModel
+import com.gndy.camman.presentation.screens.chat.ChatViewModel
+import com.gndy.camman.presentation.screens.chat.ConversationsListViewModel
+import com.gndy.camman.presentation.screens.nearby.NearbyPhotographersViewModel
 import com.gndy.camman.presentation.screens.user.BrowsePhotographersViewModel
 import com.gndy.camman.presentation.screens.user.MyBookingsViewModel
 import com.gndy.camman.presentation.screens.user.PhotographerDetailViewModel
 import com.gndy.camman.presentation.screens.photographer.PhotographerNotificationsViewModel
+import com.gndy.camman.presentation.screens.onboarding.RoleSelectionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-// Set to true to enable Firebase Auth (requires valid google-services.json)
-private const val ENABLE_FIREBASE_AUTH = false
+// Supabase Auth is now enabled by default (production-ready)
+// Supports multiple users with email/password authentication
 
 val sharedModule = module {
     // Database
@@ -84,6 +108,15 @@ val sharedModule = module {
     single { createHttpClient() }
     single { CamManApiService(get()) }
 
+    // Supabase Client (singleton)
+    single { SupabaseConfig.createClient() }
+
+    // Auth Repository (Supabase - supports multiple users)
+    single<AuthRepository> { SupabaseAuthRepositoryImpl(get()) }
+    
+    // User Role Repository (Supabase - for role management)
+    single<UserRoleRepository> { UserRoleRepositoryImpl(get()) }
+
     // Repositories
     single<AlbumRepository> { AlbumRepositoryImpl(get(), get()) }
     single<PhotoRepository> { PhotoRepositoryImpl(get(), get()) }
@@ -101,6 +134,18 @@ val sharedModule = module {
     // Review Repository
     single<ReviewRepository> { ReviewRepositoryImpl(get()) }
 
+    // Location Repository (depends on platform-specific LocationService)
+    single<LocationRepository> { LocationRepositoryImpl(get()) }
+
+    // Nearby Photographers Repository
+    single<NearbyPhotographersRepository> { NearbyPhotographersRepositoryImpl(get()) }
+
+    // Chat - WebSocket Service (singleton for real-time communication)
+    single { ChatWebSocketService() }
+
+    // Chat Repository (uses shared WebSocket service and AuthRepository)
+    single<ChatRepository> { ChatRepositoryImpl(get(), get()) }
+
     // Use Cases
     single { GetAlbumsUseCase(get()) }
     single { GetAlbumPhotosUseCase(get()) }
@@ -116,10 +161,22 @@ val sharedModule = module {
     single { RespondToReviewUseCase(get()) }
     single { MarkReviewHelpfulUseCase(get()) }
 
+    // Auth Use Cases (Supabase)
+    single { GetAuthStateUseCase(get()) }
+    single { SignInUseCase(get()) }
+    single { SignUpUseCase(get()) }
+    single { SignOutUseCase(get()) }
+    single { ResetPasswordUseCase(get()) }
+
     // ViewModels - User (Client)
     viewModel { BrowsePhotographersViewModel(get()) }
     viewModel { MyBookingsViewModel(get()) }
     viewModel { PhotographerDetailViewModel(get()) }
+    viewModel { NearbyPhotographersViewModel(get(), get()) }
+
+    // ViewModels - Chat
+    viewModel { ChatViewModel(get()) }
+    viewModel { ConversationsListViewModel(get()) }
 
     // ViewModels - Photographer
     viewModel { PhotographerMainViewModel(get()) }
@@ -140,32 +197,14 @@ val sharedModule = module {
 
     // ViewModels - Reviews
     viewModel { ReviewViewModel(get(), get(), get(), get(), get()) }
-}
 
-// ===== FIREBASE AUTH MODULE =====
-// Uncomment this when you have a valid Firebase configuration
-/*
-val firebaseAuthModule = module {
-    // Firebase Auth
-    single { dev.gitlive.firebase.Firebase.auth }
+    // ViewModels - Auth (Supabase - supports multiple users)
+    viewModel { SignInViewModel(get(), get()) }
+    viewModel { SignUpViewModel(get(), get()) }
+    viewModel { ForgotPasswordViewModel(get()) }
     
-    // Auth Repository
-    single<com.gndy.camman.domain.repository.AuthRepository> { 
-        com.gndy.camman.data.repository.AuthRepositoryImpl(get()) 
-    }
-    
-    // Auth Use Cases
-    single { com.gndy.camman.domain.usecase.auth.GetAuthStateUseCase(get()) }
-    single { com.gndy.camman.domain.usecase.auth.SignInUseCase(get()) }
-    single { com.gndy.camman.domain.usecase.auth.SignUpUseCase(get()) }
-    single { com.gndy.camman.domain.usecase.auth.SignOutUseCase(get()) }
-    single { com.gndy.camman.domain.usecase.auth.ResetPasswordUseCase(get()) }
-    
-    // Auth ViewModels
-    viewModel { com.gndy.camman.presentation.screens.auth.SignInViewModel(get(), get()) }
-    viewModel { com.gndy.camman.presentation.screens.auth.SignUpViewModel(get(), get()) }
-    viewModel { com.gndy.camman.presentation.screens.auth.ForgotPasswordViewModel(get()) }
+    // ViewModels - Onboarding/Role Selection
+    viewModel { RoleSelectionViewModel(get(), get()) }
 }
-*/
 
 expect val platformModule: Module

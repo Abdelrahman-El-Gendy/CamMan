@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CheckCircle
@@ -66,8 +67,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.gndy.camman.domain.model.Conversation
 import com.gndy.camman.domain.model.PhotographerRegistration
+import kotlinx.datetime.toLocalDateTime
 import com.gndy.camman.presentation.navigation.PhotographerBottomNavItem
+import com.gndy.camman.presentation.screens.chat.ConversationsListViewModel
 import com.gndy.camman.presentation.screens.common.PlaceholderScreen
 import com.gndy.camman.presentation.theme.Gold
 import com.gndy.camman.resources.*
@@ -79,6 +83,7 @@ fun PhotographerMainScreen(
     onNavigateToAlbum: (String) -> Unit,
     onNavigateToSignIn: () -> Unit,
     onNavigateToEditProfile: () -> Unit,
+    onNavigateToChat: (conversationId: String) -> Unit = {},
     profileUpdated: Boolean = false,
     onProfileUpdateHandled: () -> Unit = {},
     viewModel: PhotographerMainViewModel = koinViewModel()
@@ -122,6 +127,7 @@ fun PhotographerMainScreen(
                     onNavigateToAlbum = onNavigateToAlbum,
                     onNavigateToSignIn = onNavigateToSignIn,
                     onNavigateToEditProfile = onNavigateToEditProfile,
+                    onNavigateToChat = onNavigateToChat,
                     onAvailabilityChanged = viewModel::updateAvailability
                 )
             }
@@ -135,6 +141,7 @@ private fun PhotographerMainContent(
     onNavigateToAlbum: (String) -> Unit,
     onNavigateToSignIn: () -> Unit,
     onNavigateToEditProfile: () -> Unit,
+    onNavigateToChat: (conversationId: String) -> Unit,
     onAvailabilityChanged: (Boolean) -> Unit
 ) {
     var selectedTab by rememberSaveable { mutableStateOf(0) }
@@ -176,7 +183,9 @@ private fun PhotographerMainContent(
                     onAvailabilityChanged = onAvailabilityChanged
                 )
 
-                1 -> PhotographerPortfolioScreen(onNavigateToAlbum = onNavigateToAlbum)
+                1 -> PhotographerMessagesScreen(
+                    onNavigateToChat = onNavigateToChat
+                )
                 2 -> PhotographerBookingsScreen()
                 3 -> PhotographerProfileScreen(
                     profile = profile,
@@ -593,6 +602,265 @@ fun PhotographerPortfolioScreen(onNavigateToAlbum: (String) -> Unit) {
         title = stringResource(Res.string.my_portfolio),
         description = stringResource(Res.string.manage_portfolio_desc)
     )
+}
+
+/**
+ * Messages screen for photographer to view and reply to client messages
+ */
+@Composable
+fun PhotographerMessagesScreen(
+    onNavigateToChat: (conversationId: String) -> Unit,
+    viewModel: ConversationsListViewModel = koinViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        // Header
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Gold.copy(alpha = 0.1f))
+                .padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Messages",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "${uiState.totalUnreadCount} unread messages",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                }
+                if (uiState.totalUnreadCount > 0) {
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(Gold, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = if (uiState.totalUnreadCount > 9) "9+" else "${uiState.totalUnreadCount}",
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+                }
+            }
+        }
+
+        when {
+            uiState.isLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Gold)
+                }
+            }
+
+            uiState.conversations.isEmpty() -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Chat,
+                            contentDescription = null,
+                            modifier = Modifier.size(64.dp),
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                        )
+                        Text(
+                            text = "No messages yet",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        )
+                        Text(
+                            text = "Client messages will appear here",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        )
+                    }
+                }
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(uiState.conversations) { conversation ->
+                        PhotographerConversationCard(
+                            conversation = conversation,
+                            onClick = { onNavigateToChat(conversation.id) }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PhotographerConversationCard(
+    conversation: Conversation,
+    onClick: () -> Unit
+) {
+    // Get the client participant (the other person)
+    val client = conversation.participants.find { 
+        it.userType == com.gndy.camman.domain.model.ChatUserType.CLIENT 
+    }
+
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (conversation.unreadCount > 0) 
+                Gold.copy(alpha = 0.05f) 
+            else 
+                MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Client avatar
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentAlignment = Alignment.Center
+            ) {
+                if (!client?.imageUrl.isNullOrBlank()) {
+                    AsyncImage(
+                        model = client?.imageUrl,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null,
+                        modifier = Modifier.size(28.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                
+                // Online indicator
+                if (client?.isOnline == true) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(14.dp)
+                            .background(Color(0xFF4CAF50), CircleShape)
+                            .padding(2.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // Message content
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = client?.name ?: "Client",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = if (conversation.unreadCount > 0) FontWeight.Bold else FontWeight.Normal,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    
+                    conversation.lastMessage?.timestamp?.let { timestamp ->
+                        val formattedTime = formatConversationTime(timestamp)
+                        Text(
+                            text = formattedTime,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (conversation.unreadCount > 0) Gold else 
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = conversation.lastMessage?.content ?: "No messages yet",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        fontWeight = if (conversation.unreadCount > 0) FontWeight.Medium else FontWeight.Normal,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    if (conversation.unreadCount > 0) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Box(
+                            modifier = Modifier
+                                .size(22.dp)
+                                .background(Gold, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (conversation.unreadCount > 9) "9+" else "${conversation.unreadCount}",
+                                color = Color.Black,
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun formatConversationTime(timestamp: kotlinx.datetime.Instant): String {
+    val now = kotlinx.datetime.Clock.System.now()
+    val diff = now - timestamp
+    
+    return when {
+        diff.inWholeMinutes < 1 -> "now"
+        diff.inWholeMinutes < 60 -> "${diff.inWholeMinutes}m"
+        diff.inWholeHours < 24 -> "${diff.inWholeHours}h"
+        diff.inWholeDays < 7 -> "${diff.inWholeDays}d"
+        else -> {
+            val tz = kotlinx.datetime.TimeZone.currentSystemDefault()
+            val localDateTime = timestamp.toLocalDateTime(tz)
+            "${localDateTime.monthNumber}/${localDateTime.dayOfMonth}"
+        }
+    }
 }
 
 @Composable

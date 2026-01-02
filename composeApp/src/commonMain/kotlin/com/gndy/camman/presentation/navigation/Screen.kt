@@ -12,7 +12,10 @@ sealed class Screen {
     data object Onboarding : Screen()
 
     @Serializable
-    data object UserTypeSelection : Screen()
+    data object UserTypeSelection : Screen()  // Legacy - for backward compatibility
+    
+    @Serializable
+    data object RoleSelection : Screen()  // Mandatory role selection (first launch after auth)
 
     @Serializable
     data object SignIn : Screen()
@@ -38,6 +41,9 @@ sealed class Screen {
 
     @Serializable
     data object UserProfile : Screen()  // Profile tab
+
+    @Serializable
+    data object Filter : Screen()  // Filter screen for photographers
 
     // ===== PHOTOGRAPHER Bottom Navigation =====
     @Serializable
@@ -101,6 +107,16 @@ sealed class Screen {
 
     @Serializable
     data class PhotographerReviews(val photographerId: String) : Screen()
+
+    // ===== Chat Screens =====
+    @Serializable
+    data object ConversationsList : Screen()
+
+    @Serializable
+    data class Chat(
+        val conversationId: String? = null,
+        val photographerId: String? = null
+    ) : Screen()
 
     // Legacy - kept for compatibility
     @Serializable

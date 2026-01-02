@@ -1,0 +1,61 @@
+{"location":"McpSettings.kt:75","message":"MCP Settings UI opened","data":{"projectName":"CamMan"},"timestamp":1767269881478,"hypothesisId":"INIT"}
+{"location":"McpSettings.kt:401","message":"onConnectDirectoryApp called","data":{"appId":"supabase","threadName":"AWT-EventQueue-0"},"timestamp":1767269884491,"hypothesisId":"A,B,C"}
+{"location":"McpSettings.kt:406","message":"Runtime coroutine started","data":{"appId":"supabase","threadName":"DefaultDispatcher-worker-34"},"timestamp":1767269884493,"hypothesisId":"A,B"}
+{"location":"McpSettings.kt:411","message":"Before reconfigureRuntimeServer","data":{"appId":"supabase","autoAuth":"true"},"timestamp":1767269884496,"hypothesisId":"A,B"}
+{"location":"McpSettings.kt:648","message":"reconfigureRuntimeServer entry","data":{"serverName":"supabase","existingId":"null","autoAuth":"true"},"timestamp":1767269884497,"hypothesisId":"B"}
+{"location":"McpSettings.kt:696","message":"Before mcpServerManager.reconfigureServer","data":{"serverName":"supabase"},"timestamp":1767269884500,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:410","message":"reconfigureServer entry","data":{"serverId":"supabase","autoAuth":"true"},"timestamp":1767269884503,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:494","message":"Before createRemoteServer/createStdioServer","data":{"serverId":"supabase","hasUrl":"true"},"timestamp":1767269884511,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767269884513,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"supabase","hasToken":"false"},"timestamp":1767269884518,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"supabase"},"timestamp":1767269884519,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"supabase","oauthRequired":"true"},"timestamp":1767269884909,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:502","message":"After createRemoteServer/createStdioServer","data":{"serverId":"supabase"},"timestamp":1767269884911,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:518","message":"Before authenticateServer","data":{"serverId":"supabase"},"timestamp":1767269884912,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:650","message":"Before stateLock acquisition","data":{"serverId":"supabase","threadName":"DefaultDispatcher-worker-34"},"timestamp":1767269884914,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:654","message":"Inside stateLock","data":{"serverId":"supabase"},"timestamp":1767269884914,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:672","message":"Exiting stateLock","data":{"serverId":"supabase"},"timestamp":1767269884914,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:675","message":"After stateLock release","data":{"serverId":"supabase"},"timestamp":1767269884915,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:681","message":"Before OAuth getValidToken","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767269884916,"hypothesisId":"A,B"}
+{"location":"McpServerManager.kt:686","message":"OAuth progress callback","data":{"serverId":"supabase","progress":"WAITING_FOR_CALLBACK"},"timestamp":1767269886146,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:686","message":"OAuth progress callback","data":{"serverId":"supabase","progress":"EXCHANGING_TOKEN"},"timestamp":1767269901277,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:695","message":"OAuth completed successfully","data":{"serverId":"supabase"},"timestamp":1767269906312,"hypothesisId":"A,B"}
+{"location":"McpServerManager.kt:526","message":"After authenticateServer","data":{"serverId":"supabase"},"timestamp":1767269909933,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:530","message":"reconfigureServer exit","data":{"serverId":"supabase"},"timestamp":1767269909934,"hypothesisId":"B"}
+{"location":"McpSettings.kt:705","message":"After mcpServerManager.reconfigureServer","data":{"serverName":"supabase"},"timestamp":1767269909935,"hypothesisId":"B"}
+{"location":"McpSettings.kt:711","message":"reconfigureRuntimeServer exit","data":{"serverName":"supabase"},"timestamp":1767269909936,"hypothesisId":"B"}
+{"location":"McpSettings.kt:418","message":"After reconfigureRuntimeServer","data":{"appId":"supabase"},"timestamp":1767269909936,"hypothesisId":"A,B"}
+{"location":"McpSettings.kt:75","message":"MCP Settings UI opened","data":{"projectName":"CamMan"},"timestamp":1767277903607,"hypothesisId":"INIT"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767302757253,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"supabase","hasToken":"false"},"timestamp":1767302757267,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"supabase"},"timestamp":1767302757268,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"supabase","oauthRequired":"true"},"timestamp":1767302757738,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767355182856,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"supabase","hasToken":"false"},"timestamp":1767355182866,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"supabase"},"timestamp":1767355182867,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"supabase","oauthRequired":"true"},"timestamp":1767355185352,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767356243952,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"supabase","hasToken":"false"},"timestamp":1767356243954,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"supabase"},"timestamp":1767356243955,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"supabase","oauthRequired":"true"},"timestamp":1767356246846,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767361133003,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"supabase","hasToken":"false"},"timestamp":1767361133010,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"supabase"},"timestamp":1767361133010,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"supabase","oauthRequired":"true"},"timestamp":1767361133880,"hypothesisId":"B"}
+{"location":"McpSettings.kt:75","message":"MCP Settings UI opened","data":{"projectName":"CamMan"},"timestamp":1767362062972,"hypothesisId":"INIT"}
+{"location":"McpSettings.kt:401","message":"onConnectDirectoryApp called","data":{"appId":"figma","threadName":"AWT-EventQueue-0"},"timestamp":1767362067393,"hypothesisId":"A,B,C"}
+{"location":"McpSettings.kt:406","message":"Runtime coroutine started","data":{"appId":"figma","threadName":"DefaultDispatcher-worker-23"},"timestamp":1767362067396,"hypothesisId":"A,B"}
+{"location":"McpSettings.kt:411","message":"Before reconfigureRuntimeServer","data":{"appId":"figma","autoAuth":"true"},"timestamp":1767362067397,"hypothesisId":"A,B"}
+{"location":"McpSettings.kt:648","message":"reconfigureRuntimeServer entry","data":{"serverName":"figma","existingId":"null","autoAuth":"true"},"timestamp":1767362067398,"hypothesisId":"B"}
+{"location":"McpSettings.kt:696","message":"Before mcpServerManager.reconfigureServer","data":{"serverName":"figma"},"timestamp":1767362067400,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:410","message":"reconfigureServer entry","data":{"serverId":"figma","autoAuth":"true"},"timestamp":1767362067403,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:494","message":"Before createRemoteServer/createStdioServer","data":{"serverId":"figma","hasUrl":"true"},"timestamp":1767362067407,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"figma","url":"http://127.0.0.1:3845/mcp"},"timestamp":1767362067408,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"figma","hasToken":"false"},"timestamp":1767362067410,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"figma"},"timestamp":1767362067410,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"figma","oauthRequired":"false"},"timestamp":1767362067436,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:502","message":"After createRemoteServer/createStdioServer","data":{"serverId":"figma"},"timestamp":1767362067623,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:530","message":"reconfigureServer exit","data":{"serverId":"figma"},"timestamp":1767362067624,"hypothesisId":"B"}
+{"location":"McpSettings.kt:705","message":"After mcpServerManager.reconfigureServer","data":{"serverName":"figma"},"timestamp":1767362067625,"hypothesisId":"B"}
+{"location":"McpSettings.kt:711","message":"reconfigureRuntimeServer exit","data":{"serverName":"figma"},"timestamp":1767362067625,"hypothesisId":"B"}
+{"location":"McpSettings.kt:418","message":"After reconfigureRuntimeServer","data":{"appId":"figma"},"timestamp":1767362067625,"hypothesisId":"A,B"}

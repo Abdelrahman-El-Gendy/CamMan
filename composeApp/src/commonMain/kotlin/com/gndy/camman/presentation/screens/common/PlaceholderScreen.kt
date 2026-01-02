@@ -81,6 +81,7 @@ fun PlaceholderScreen(
 @Composable
 fun ProfilePlaceholderScreen(
     title: String,
+    subtitle: String? = null,
     onSignOut: () -> Unit
 ) {
     Box(
@@ -107,6 +108,17 @@ fun ProfilePlaceholderScreen(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
+            
+            // Show user name/email if provided
+            if (subtitle != null) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Gold,
+                    fontWeight = FontWeight.Medium
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 

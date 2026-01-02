@@ -1,19 +1,27 @@
 package com.gndy.camman.presentation.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Chat
+import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Dashboard
+import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.Search
@@ -31,18 +39,18 @@ sealed class UserBottomNavItem(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
-    data object Browse : UserBottomNavItem(
-        route = "browse_photographers",
-        titleRes = Res.string.nav_browse,
-        selectedIcon = Icons.Filled.Search,
-        unselectedIcon = Icons.Outlined.Search
+    data object Home : UserBottomNavItem(
+        route = "home",
+        titleRes = Res.string.nav_home,
+        selectedIcon = Icons.Filled.Home,
+        unselectedIcon = Icons.Outlined.Home
     )
 
-    data object Bookings : UserBottomNavItem(
-        route = "user_bookings",
-        titleRes = Res.string.nav_bookings,
-        selectedIcon = Icons.Filled.CalendarMonth,
-        unselectedIcon = Icons.Outlined.CalendarMonth
+    data object NearBy : UserBottomNavItem(
+        route = "nearby",
+        titleRes = Res.string.nav_nearby,
+        selectedIcon = Icons.Filled.LocationOn,
+        unselectedIcon = Icons.Outlined.LocationOn
     )
 
     data object Favorites : UserBottomNavItem(
@@ -50,6 +58,13 @@ sealed class UserBottomNavItem(
         titleRes = Res.string.nav_favorites,
         selectedIcon = Icons.Filled.Favorite,
         unselectedIcon = Icons.Outlined.FavoriteBorder
+    )
+
+    data object Bookings : UserBottomNavItem(
+        route = "bookings",
+        titleRes = Res.string.nav_bookings,
+        selectedIcon = Icons.Filled.CalendarMonth,
+        unselectedIcon = Icons.Outlined.CalendarMonth
     )
 
     data object Profile : UserBottomNavItem(
@@ -60,7 +75,7 @@ sealed class UserBottomNavItem(
     )
 
     companion object {
-        val items = listOf(Browse, Bookings, Favorites, Profile)
+        val items = listOf(Home, NearBy, Favorites, Bookings, Profile)
     }
 }
 
@@ -80,11 +95,11 @@ sealed class PhotographerBottomNavItem(
         unselectedIcon = Icons.Outlined.Dashboard
     )
 
-    data object Portfolio : PhotographerBottomNavItem(
-        route = "photographer_portfolio",
-        titleRes = Res.string.nav_portfolio,
-        selectedIcon = Icons.Filled.PhotoLibrary,
-        unselectedIcon = Icons.Outlined.PhotoLibrary
+    data object Messages : PhotographerBottomNavItem(
+        route = "photographer_messages",
+        titleRes = Res.string.nav_messages,
+        selectedIcon = Icons.AutoMirrored.Filled.Chat,
+        unselectedIcon = Icons.AutoMirrored.Outlined.Chat
     )
 
     data object Bookings : PhotographerBottomNavItem(
@@ -102,6 +117,6 @@ sealed class PhotographerBottomNavItem(
     )
 
     companion object {
-        val items = listOf(Home, Portfolio, Bookings, Profile)
+        val items = listOf(Home, Messages, Bookings, Profile)
     }
 }

@@ -18,11 +18,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -49,11 +53,16 @@ import com.gndy.camman.presentation.components.formatTime
 import com.gndy.camman.presentation.theme.Gold
 import org.koin.compose.viewmodel.koinViewModel
 
+// WhatsApp brand color
+private val WhatsAppGreen = Color(0xFF25D366)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyBookingsScreen(
     onNavigateBack: () -> Unit,
     onBookingClick: (String) -> Unit,
+    onChatClick: (photographerId: String, bookingId: String) -> Unit = { _, _ -> },
+    onWhatsAppClick: (phoneNumber: String, photographerName: String) -> Unit = { _, _ -> },
     viewModel: MyBookingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -84,6 +93,8 @@ fun MyBookingsScreen(
         MyBookingsContent(
             uiState = uiState,
             onBookingClick = onBookingClick,
+            onChatClick = onChatClick,
+            onWhatsAppClick = onWhatsAppClick,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -95,6 +106,8 @@ fun MyBookingsScreen(
 @Composable
 fun MyBookingsScreenContent(
     onBookingClick: (String) -> Unit,
+    onChatClick: (photographerId: String, bookingId: String) -> Unit = { _, _ -> },
+    onWhatsAppClick: (phoneNumber: String, photographerName: String) -> Unit = { _, _ -> },
     viewModel: MyBookingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -102,6 +115,8 @@ fun MyBookingsScreenContent(
     MyBookingsContent(
         uiState = uiState,
         onBookingClick = onBookingClick,
+        onChatClick = onChatClick,
+        onWhatsAppClick = onWhatsAppClick,
         modifier = Modifier.fillMaxSize()
     )
 }
@@ -110,6 +125,8 @@ fun MyBookingsScreenContent(
 private fun MyBookingsContent(
     uiState: MyBookingsUiState,
     onBookingClick: (String) -> Unit,
+    onChatClick: (photographerId: String, bookingId: String) -> Unit,
+    onWhatsAppClick: (phoneNumber: String, photographerName: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when {
@@ -179,7 +196,14 @@ private fun MyBookingsContent(
                     items(upcomingBookings) { booking ->
                         BookingCard(
                             booking = booking,
-                            onClick = { onBookingClick(booking.id) }
+                            onClick = { onBookingClick(booking.id) },
+                            onChatClick = { onChatClick(booking.photographerId, booking.id) },
+                            onWhatsAppClick = {
+                                booking.photographerPhone?.let { phone ->
+                                    onWhatsAppClick(phone, booking.photographerName ?: "Photographer")
+                                }
+                            },
+                            showActions = true
                         )
                     }
                 }
@@ -206,7 +230,14 @@ private fun MyBookingsContent(
                     items(pastBookings) { booking ->
                         BookingCard(
                             booking = booking,
-                            onClick = { onBookingClick(booking.id) }
+                            onClick = { onBookingClick(booking.id) },
+                            onChatClick = { onChatClick(booking.photographerId, booking.id) },
+                            onWhatsAppClick = {
+                                booking.photographerPhone?.let { phone ->
+                                    onWhatsAppClick(phone, booking.photographerName ?: "Photographer")
+                                }
+                            },
+                            showActions = false // Don't show actions for past bookings
                         )
                     }
                 }
@@ -219,7 +250,10 @@ private fun MyBookingsContent(
 @Composable
 private fun BookingCard(
     booking: Booking,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onChatClick: () -> Unit,
+    onWhatsAppClick: () -> Unit,
+    showActions: Boolean = true
 ) {
     Card(
         onClick = onClick,
@@ -262,11 +296,13 @@ private fun BookingCard(
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
-                        Text(
-                            text = "ID: ${booking.id}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
+                        booking.photographerName?.let { name ->
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                        }
                     }
                 }
 
@@ -349,6 +385,57 @@ private fun BookingCard(
                     fontWeight = FontWeight.Bold,
                     color = Gold
                 )
+            }
+            
+            // Action Buttons - Chat with photographer
+            if (showActions) {
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // In-App Chat Button
+                    OutlinedButton(
+                        onClick = onChatClick,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Chat,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "Chat",
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+                    
+                    // WhatsApp Button
+                    if (booking.photographerPhone != null) {
+                        Button(
+                            onClick = onWhatsAppClick,
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = WhatsAppGreen,
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = "📱",
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "WhatsApp",
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                    }
+                }
             }
         }
     }
