@@ -3,6 +3,7 @@ package com.gndy.camman.data.repository
 import com.gndy.camman.domain.model.AuthResult
 import com.gndy.camman.domain.model.AuthState
 import com.gndy.camman.domain.model.AuthUser
+import com.gndy.camman.domain.model.UserType
 import com.gndy.camman.domain.repository.AuthRepository
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.FirebaseUser
@@ -11,6 +12,9 @@ import kotlinx.coroutines.flow.map
 
 /**
  * Implementation of AuthRepository using Firebase Authentication
+ * 
+ * NOTE: This is a legacy implementation. The app now uses SupabaseAuthRepositoryImpl.
+ * Role management is not fully supported with Firebase - use Supabase instead.
  */
 class AuthRepositoryImpl(
     private val firebaseAuth: FirebaseAuth
@@ -29,6 +33,9 @@ class AuthRepositoryImpl(
 
     override val isLoggedIn: Boolean
         get() = firebaseAuth.currentUser != null
+    
+    override val hasRole: Boolean
+        get() = false // Firebase doesn't support role management in metadata
 
     override suspend fun signInWithEmail(email: String, password: String): AuthResult {
         return try {
@@ -165,6 +172,24 @@ class AuthRepositoryImpl(
             AuthResult.Error(mapFirebaseError(e), e)
         }
     }
+    
+    // ============== Role Management (Not fully supported with Firebase) ==============
+    
+    override fun getUserRole(): UserType? {
+        // Firebase doesn't natively support role in user metadata like Supabase
+        // You would need to use Firestore/Realtime Database for this
+        return null
+    }
+    
+    override suspend fun setUserRole(role: UserType): AuthResult {
+        // Firebase doesn't support storing arbitrary metadata in auth user
+        // You would need to use Firestore/Realtime Database
+        return AuthResult.Error("Role management requires Supabase. Please use SupabaseAuthRepositoryImpl.")
+    }
+    
+    override fun canSetRole(): Boolean {
+        return false
+    }
 
     /**
      * Convert FirebaseUser to domain AuthUser
@@ -176,7 +201,8 @@ class AuthRepositoryImpl(
             displayName = displayName,
             photoUrl = photoURL,
             isEmailVerified = isEmailVerified,
-            providerId = providerId
+            providerId = providerId,
+            role = null // Firebase doesn't support role in metadata
         )
     }
 

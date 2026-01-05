@@ -3,12 +3,10 @@ package com.gndy.camman.presentation.screens.auth.authviewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gndy.camman.domain.model.AuthResult
-import com.gndy.camman.domain.model.AuthState
 import com.gndy.camman.domain.model.UserType
-import com.gndy.camman.domain.repository.UserRoleRepository
+import com.gndy.camman.domain.repository.AuthRepository
 import com.gndy.camman.domain.usecase.auth.GetAuthStateUseCase
 import com.gndy.camman.domain.usecase.auth.SignUpUseCase
-import com.gndy.camman.domain.util.Resource
 import com.gndy.camman.presentation.screens.auth.authevents.SignUpUiEvent
 import com.gndy.camman.presentation.screens.auth.authstates.SignUpUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,15 +21,17 @@ import kotlinx.coroutines.launch
  * ViewModel for SignUp screen
  * 
  * Handles the complete signup flow with Supabase:
- * 1. Validate user inputs (email, password, user type)
- * 2. Create auth user in Supabase auth.users
- * 3. Create user profile in user_profiles table
- * 4. Set user role (client/photographer) in the profile
+ * 1. User selects their role (Client or Photographer)
+ * 2. Validate user inputs (email, password, role)
+ * 3. Create auth user in Supabase auth.users
+ * 4. Store role in auth.users.raw_user_meta_data
+ * 5. Sign out the user (requires login to access app)
+ * 6. Navigate to SignIn screen so user can log in with their credentials
  */
 class SignUpViewModel(
     private val signUpUseCase: SignUpUseCase,
     private val getAuthStateUseCase: GetAuthStateUseCase,
-    private val userRoleRepository: UserRoleRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignUpUiState())
@@ -39,23 +39,6 @@ class SignUpViewModel(
 
     private val _uiEvents = MutableSharedFlow<SignUpUiEvent>()
     val uiEvents = _uiEvents.asSharedFlow()
-
-    init {
-        observeAuthState()
-    }
-
-    private fun observeAuthState() {
-        viewModelScope.launch {
-            getAuthStateUseCase().collect { authState ->
-                // Only auto-navigate if user is authenticated AND has completed signup flow
-                // The signup flow sets the role, so we check if state is not loading
-                if (authState is AuthState.Authenticated && !_uiState.value.isLoading) {
-                    // Check if this is a fresh signup that we're handling
-                    // Don't auto-navigate during our signup flow
-                }
-            }
-        }
-    }
 
     fun onDisplayNameChanged(name: String) {
         _uiState.update {
@@ -105,6 +88,9 @@ class SignUpViewModel(
         _uiState.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
     }
 
+    /**
+     * Handle user type (role) selection
+     */
     fun onUserTypeSelected(userType: UserType) {
         _uiState.update {
             it.copy(
@@ -120,7 +106,8 @@ class SignUpViewModel(
 
         // Validate inputs
         var hasError = false
-        
+
+        // Validate role selection first
         if (state.selectedUserType == null) {
             _uiState.update { it.copy(userTypeError = "Please select your account type") }
             hasError = true
@@ -160,60 +147,36 @@ class SignUpViewModel(
 
             when (authResult) {
                 is AuthResult.Success -> {
-                    val userId = authResult.user.uid
+                    // Step 2: Set user role in auth.users.raw_user_meta_data
+                    val roleResult = authRepository.setUserRole(state.selectedUserType!!)
                     
-                    // Step 2: Create user profile in user_profiles table
-                    val profileResult = userRoleRepository.createProfileIfNotExists(
-                        userId = userId,
-                        email = state.email,
-                        displayName = state.displayName.takeIf { it.isNotBlank() }
-                    )
-                    
-                    when (profileResult) {
-                        is Resource.Success -> {
-                            // Step 3: Set user role (client/photographer)
-                            val roleResult = userRoleRepository.setUserRole(
-                                userId = userId,
-                                role = state.selectedUserType!! // Already validated above
+                    when (roleResult) {
+                        is AuthResult.Success -> {
+                            // Step 3: Sign out the user so they need to log in
+                            authRepository.signOut()
+                            
+                            _uiState.update { it.copy(isLoading = false) }
+                            _uiEvents.emit(
+                                SignUpUiEvent.ShowSuccess(
+                                    "Account created successfully! Please sign in to continue."
+                                )
                             )
                             
-                            when (roleResult) {
-                                is Resource.Success -> {
-                                    _uiState.update { it.copy(isLoading = false) }
-                                    _uiEvents.emit(
-                                        SignUpUiEvent.ShowSuccess(
-                                            "Account created successfully! Welcome to CamMan."
-                                        )
-                                    )
-                                    _uiEvents.emit(SignUpUiEvent.NavigateToHome)
-                                }
-                                is Resource.Error -> {
-                                    _uiState.update {
-                                        it.copy(
-                                            isLoading = false,
-                                            error = "Account created but role setup failed: ${roleResult.message}"
-                                        )
-                                    }
-                                    // Still navigate - user can set role later
-                                    _uiEvents.emit(SignUpUiEvent.NavigateToHome)
-                                }
-                                is Resource.Loading -> {
-                                    // Shouldn't happen
-                                }
-                            }
+                            // Step 4: Navigate to SignIn screen
+                            _uiEvents.emit(SignUpUiEvent.NavigateToSignIn)
                         }
-                        is Resource.Error -> {
-                            _uiState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    error = "Account created but profile setup failed: ${profileResult.message}"
+                        is AuthResult.Error -> {
+                            // Account created but role failed - still navigate to sign in
+                            authRepository.signOut()
+                            
+                            _uiState.update { it.copy(isLoading = false) }
+                            _uiEvents.emit(
+                                SignUpUiEvent.ShowSuccess(
+                                    "Account created! Please sign in to complete setup."
                                 )
-                            }
-                            // Still navigate - profile will be created on next sign in
-                            _uiEvents.emit(SignUpUiEvent.NavigateToHome)
-                        }
-                        is Resource.Loading -> {
-                            // Shouldn't happen
+                            )
+                            
+                            _uiEvents.emit(SignUpUiEvent.NavigateToSignIn)
                         }
                     }
                 }

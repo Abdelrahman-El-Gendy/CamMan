@@ -87,7 +87,6 @@ private val InputFieldHeight = 56.dp
 
 @Composable
 fun SignUpScreen(
-    onNavigateToHome: () -> Unit,
     onNavigateToSignIn: () -> Unit,
     viewModel: SignUpViewModel = koinViewModel()
 ) {
@@ -98,7 +97,6 @@ fun SignUpScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEvents.collectLatest { event ->
             when (event) {
-                is SignUpUiEvent.NavigateToHome -> onNavigateToHome()
                 is SignUpUiEvent.NavigateToSignIn -> onNavigateToSignIn()
                 is SignUpUiEvent.ShowError -> snackbarHostState.showSnackbar(event.message)
                 is SignUpUiEvent.ShowSuccess -> snackbarHostState.showSnackbar(event.message)

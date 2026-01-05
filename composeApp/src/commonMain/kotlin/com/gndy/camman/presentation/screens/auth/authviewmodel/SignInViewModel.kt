@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gndy.camman.domain.model.AuthResult
 import com.gndy.camman.domain.model.AuthState
+import com.gndy.camman.domain.model.UserType
+import com.gndy.camman.domain.repository.AuthRepository
 import com.gndy.camman.domain.usecase.auth.GetAuthStateUseCase
 import com.gndy.camman.domain.usecase.auth.SignInUseCase
 import com.gndy.camman.presentation.screens.auth.authevents.SignInUiEvent
@@ -18,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val signInUseCase: SignInUseCase,
-    private val getAuthStateUseCase: GetAuthStateUseCase
+    private val getAuthStateUseCase: GetAuthStateUseCase,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
@@ -35,9 +38,22 @@ class SignInViewModel(
         viewModelScope.launch {
             getAuthStateUseCase().collect { authState ->
                 if (authState is AuthState.Authenticated) {
-                    _uiEvents.emit(SignInUiEvent.NavigateToHome)
+                    // Check user's role and navigate accordingly
+                    navigateBasedOnRole()
                 }
             }
+        }
+    }
+    
+    /**
+     * Navigates to the appropriate home based on user's role
+     */
+    private suspend fun navigateBasedOnRole() {
+        val role = authRepository.getUserRole()
+        when (role) {
+            UserType.USER -> _uiEvents.emit(SignInUiEvent.NavigateToClientHome)
+            UserType.PHOTOGRAPHER -> _uiEvents.emit(SignInUiEvent.NavigateToPhotographerHome)
+            null -> _uiEvents.emit(SignInUiEvent.NavigateToRoleSelection)
         }
     }
 
@@ -86,7 +102,8 @@ class SignInViewModel(
             when (val result = signInUseCase(state.email, state.password)) {
                 is AuthResult.Success -> {
                     _uiState.update { it.copy(isLoading = false) }
-                    _uiEvents.emit(SignInUiEvent.NavigateToHome)
+                    // Navigate based on user's role from auth metadata
+                    navigateBasedOnRole()
                 }
 
                 is AuthResult.Error -> {

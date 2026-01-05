@@ -3,6 +3,7 @@ package com.gndy.camman.data.repository
 import com.gndy.camman.domain.model.AuthResult
 import com.gndy.camman.domain.model.AuthState
 import com.gndy.camman.domain.model.AuthUser
+import com.gndy.camman.domain.model.UserType
 import com.gndy.camman.domain.repository.AuthRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
@@ -26,12 +27,19 @@ import kotlinx.serialization.json.jsonPrimitive
  * - Email verification
  * - Password reset
  * - Session management with automatic token refresh
+ * - Role management via raw_user_meta_data
  */
 class SupabaseAuthRepositoryImpl(
     private val supabaseClient: SupabaseClient
 ) : AuthRepository {
 
     private val auth = supabaseClient.auth
+    
+    companion object {
+        private const val ROLE_KEY = "role"
+        private const val ROLE_CLIENT = "client"
+        private const val ROLE_PHOTOGRAPHER = "photographer"
+    }
 
     override val authState: Flow<AuthState> = auth.sessionStatus.map { status ->
         when (status) {
@@ -57,6 +65,9 @@ class SupabaseAuthRepositoryImpl(
 
     override val isLoggedIn: Boolean
         get() = auth.currentUserOrNull() != null
+    
+    override val hasRole: Boolean
+        get() = getUserRole() != null
 
     override suspend fun signInWithEmail(email: String, password: String): AuthResult {
         return try {
@@ -221,12 +232,60 @@ class SupabaseAuthRepositoryImpl(
             AuthResult.Error(mapSupabaseError(e), e)
         }
     }
+    
+    // ============== Role Management ==============
+    
+    override fun getUserRole(): UserType? {
+        val user = auth.currentUserOrNull() ?: return null
+        val roleString = user.userMetadata?.getStringOrNull(ROLE_KEY)
+        return roleString?.toUserType()
+    }
+    
+    override suspend fun setUserRole(role: UserType): AuthResult {
+        return try {
+            val user = auth.currentUserOrNull()
+            if (user == null) {
+                return AuthResult.Error("No user is signed in")
+            }
+            
+            // Check if role is already set
+            val existingRole = user.userMetadata?.getStringOrNull(ROLE_KEY)
+            if (!existingRole.isNullOrBlank()) {
+                return AuthResult.Error("Role already assigned. You cannot change your role once selected.")
+            }
+            
+            // Set role in user metadata
+            val roleString = role.toDbString()
+            auth.updateUser {
+                data {
+                    put(ROLE_KEY, JsonPrimitive(roleString))
+                }
+            }
+            
+            // Refresh session to get updated metadata
+            auth.refreshCurrentSession()
+            
+            val updatedUser = auth.currentUserOrNull()
+            if (updatedUser != null) {
+                AuthResult.Success(updatedUser.toAuthUser())
+            } else {
+                AuthResult.Error("Failed to update user role")
+            }
+        } catch (e: Exception) {
+            AuthResult.Error(mapSupabaseError(e), e)
+        }
+    }
+    
+    override fun canSetRole(): Boolean {
+        return getUserRole() == null
+    }
 
     /**
      * Convert Supabase UserInfo to domain AuthUser
      */
     private fun UserInfo.toAuthUser(): AuthUser {
         val metadata = userMetadata
+        val roleString = metadata?.getStringOrNull(ROLE_KEY)
         return AuthUser(
             uid = id,
             email = email,
@@ -234,8 +293,26 @@ class SupabaseAuthRepositoryImpl(
                 ?: metadata?.getStringOrNull("full_name"),
             photoUrl = metadata?.getStringOrNull("avatar_url"),
             isEmailVerified = emailConfirmedAt != null,
-            providerId = appMetadata?.getStringOrNull("provider") ?: "email"
+            providerId = appMetadata?.getStringOrNull("provider") ?: "email",
+            role = roleString?.toUserType()
         )
+    }
+    
+    /**
+     * Convert UserType to database string
+     */
+    private fun UserType.toDbString(): String = when (this) {
+        UserType.USER -> ROLE_CLIENT
+        UserType.PHOTOGRAPHER -> ROLE_PHOTOGRAPHER
+    }
+    
+    /**
+     * Convert database string to UserType
+     */
+    private fun String.toUserType(): UserType? = when (this.lowercase()) {
+        ROLE_CLIENT -> UserType.USER
+        ROLE_PHOTOGRAPHER -> UserType.PHOTOGRAPHER
+        else -> null
     }
 
     /**

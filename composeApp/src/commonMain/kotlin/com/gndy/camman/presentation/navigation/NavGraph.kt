@@ -124,8 +124,18 @@ fun CamManNavGraph(
         // ============== Auth Screens ==============
         composable<Screen.SignIn> {
             SignInScreen(
-                onNavigateToHome = {
-                    // After successful login, go to RoleSelection (validates existing role)
+                onNavigateToClientHome = {
+                    navController.navigate(Screen.UserMain) {
+                        popUpTo(Screen.SignIn) { inclusive = true }
+                    }
+                },
+                onNavigateToPhotographerHome = {
+                    navController.navigate(Screen.PhotographerMain) {
+                        popUpTo(Screen.SignIn) { inclusive = true }
+                    }
+                },
+                onNavigateToRoleSelection = {
+                    // User has no role, go to role selection
                     navController.navigate(Screen.RoleSelection) {
                         popUpTo(Screen.SignIn) { inclusive = true }
                     }
@@ -142,14 +152,11 @@ fun CamManNavGraph(
 
         composable<Screen.SignUp> {
             SignUpScreen(
-                onNavigateToHome = {
-                    // After successful signup, go to RoleSelection (mandatory)
-                    navController.navigate(Screen.RoleSelection) {
+                onNavigateToSignIn = {
+                    // After successful signup, navigate to SignIn to login
+                    navController.navigate(Screen.SignIn) {
                         popUpTo(Screen.SignUp) { inclusive = true }
                     }
-                },
-                onNavigateToSignIn = {
-                    navController.popBackStack()
                 }
             )
         }

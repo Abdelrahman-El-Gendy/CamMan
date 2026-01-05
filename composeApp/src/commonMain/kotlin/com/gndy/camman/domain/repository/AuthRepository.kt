@@ -3,10 +3,15 @@ package com.gndy.camman.domain.repository
 import com.gndy.camman.domain.model.AuthResult
 import com.gndy.camman.domain.model.AuthState
 import com.gndy.camman.domain.model.AuthUser
+import com.gndy.camman.domain.model.UserType
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository interface for authentication operations
+ * 
+ * Role Management:
+ * - User role (CLIENT/PHOTOGRAPHER) is stored in auth.users.raw_user_meta_data
+ * - Role is set during first signup and cannot be changed
  */
 interface AuthRepository {
     /**
@@ -23,6 +28,11 @@ interface AuthRepository {
      * Check if user is currently logged in
      */
     val isLoggedIn: Boolean
+    
+    /**
+     * Check if the current user has a role assigned
+     */
+    val hasRole: Boolean
 
     /**
      * Sign in with email and password
@@ -67,4 +77,29 @@ interface AuthRepository {
      * Delete the current user account
      */
     suspend fun deleteAccount(): AuthResult
+    
+    // ============== Role Management ==============
+    
+    /**
+     * Get the user's role from metadata
+     * @return UserType or null if not set
+     */
+    fun getUserRole(): UserType?
+    
+    /**
+     * Set the user's role (one-time operation)
+     * Role is stored in auth.users.raw_user_meta_data
+     * 
+     * @param role The role to assign (USER/CLIENT or PHOTOGRAPHER)
+     * @return AuthResult indicating success or failure
+     */
+    suspend fun setUserRole(role: UserType): AuthResult
+    
+    /**
+     * Check if user can change their role
+     * Users can only set role once (during first login after signup)
+     * 
+     * @return true if role is not yet set, false otherwise
+     */
+    fun canSetRole(): Boolean
 }

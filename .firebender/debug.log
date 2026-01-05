@@ -59,3 +59,19 @@
 {"location":"McpSettings.kt:705","message":"After mcpServerManager.reconfigureServer","data":{"serverName":"figma"},"timestamp":1767362067625,"hypothesisId":"B"}
 {"location":"McpSettings.kt:711","message":"reconfigureRuntimeServer exit","data":{"serverName":"figma"},"timestamp":1767362067625,"hypothesisId":"B"}
 {"location":"McpSettings.kt:418","message":"After reconfigureRuntimeServer","data":{"appId":"figma"},"timestamp":1767362067625,"hypothesisId":"A,B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"figma","url":"http://127.0.0.1:3845/mcp"},"timestamp":1767554646682,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767554646689,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"supabase","hasToken":"false"},"timestamp":1767554646696,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"supabase"},"timestamp":1767554646697,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"figma","hasToken":"false"},"timestamp":1767554646713,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"figma"},"timestamp":1767554646714,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"figma","oauthRequired":"false"},"timestamp":1767554646716,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"supabase","oauthRequired":"true"},"timestamp":1767554647124,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"supabase","url":"https://mcp.supabase.com/mcp"},"timestamp":1767637765099,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"supabase","hasToken":"false"},"timestamp":1767637765174,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"supabase"},"timestamp":1767637765174,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:906","message":"createRemoteServer entry","data":{"serverId":"figma","url":"http://127.0.0.1:3845/mcp"},"timestamp":1767637765097,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:915","message":"Token check complete","data":{"serverId":"figma","hasToken":"false"},"timestamp":1767637765180,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:965","message":"Before OAuth probe","data":{"serverId":"figma"},"timestamp":1767637765181,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"figma","oauthRequired":"false"},"timestamp":1767637765184,"hypothesisId":"B"}
+{"location":"McpServerManager.kt:969","message":"After OAuth probe","data":{"serverId":"supabase","oauthRequired":"true"},"timestamp":1767637765323,"hypothesisId":"B"}

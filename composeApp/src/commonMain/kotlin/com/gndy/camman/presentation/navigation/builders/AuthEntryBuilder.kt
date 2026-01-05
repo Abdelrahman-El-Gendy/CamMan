@@ -21,8 +21,18 @@ class AuthEntryBuilder : NavEntryBuilder {
         // Sign In Entry
         composable<Screen.SignIn> {
             SignInScreen(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
+                onNavigateToClientHome = {
+                    navController.navigate(Screen.UserMain) {
+                        popUpTo(Screen.SignIn) { inclusive = true }
+                    }
+                },
+                onNavigateToPhotographerHome = {
+                    navController.navigate(Screen.PhotographerMain) {
+                        popUpTo(Screen.SignIn) { inclusive = true }
+                    }
+                },
+                onNavigateToRoleSelection = {
+                    navController.navigate(Screen.RoleSelection) {
                         popUpTo(Screen.SignIn) { inclusive = true }
                     }
                 },
@@ -38,13 +48,11 @@ class AuthEntryBuilder : NavEntryBuilder {
         // Sign Up Entry
         composable<Screen.SignUp> {
             SignUpScreen(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
-                        popUpTo(Screen.SignIn) { inclusive = true }
-                    }
-                },
                 onNavigateToSignIn = {
-                    navController.popBackStack()
+                    // After successful signup, navigate to SignIn to login
+                    navController.navigate(Screen.SignIn) {
+                        popUpTo(Screen.SignUp) { inclusive = true }
+                    }
                 }
             )
         }

@@ -2,6 +2,8 @@ package com.gndy.camman.domain.model
 
 /**
  * Domain model representing an authenticated user
+ * 
+ * Role is stored in auth.users.raw_user_meta_data for simplicity and reliability
  */
 data class AuthUser(
     val uid: String,
@@ -9,8 +11,24 @@ data class AuthUser(
     val displayName: String?,
     val photoUrl: String?,
     val isEmailVerified: Boolean,
-    val providerId: String?
-)
+    val providerId: String?,
+    val role: UserType? = null  // Role stored in user metadata
+) {
+    /**
+     * Check if user has selected a role
+     */
+    val hasRole: Boolean get() = role != null
+    
+    /**
+     * Check if user is a client
+     */
+    val isClient: Boolean get() = role == UserType.USER
+    
+    /**
+     * Check if user is a photographer
+     */
+    val isPhotographer: Boolean get() = role == UserType.PHOTOGRAPHER
+}
 
 /**
  * Authentication state

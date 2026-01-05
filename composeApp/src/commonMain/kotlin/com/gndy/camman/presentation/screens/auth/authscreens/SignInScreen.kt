@@ -75,7 +75,9 @@ private val BorderColor = Color(0xFF30363D)
 
 @Composable
 fun SignInScreen(
-    onNavigateToHome: () -> Unit,
+    onNavigateToClientHome: () -> Unit,
+    onNavigateToPhotographerHome: () -> Unit,
+    onNavigateToRoleSelection: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onNavigateToForgotPassword: () -> Unit,
     onNavigateBack: (() -> Unit)? = null,
@@ -89,7 +91,9 @@ fun SignInScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEvents.collectLatest { event ->
             when (event) {
-                is SignInUiEvent.NavigateToHome -> onNavigateToHome()
+                is SignInUiEvent.NavigateToClientHome -> onNavigateToClientHome()
+                is SignInUiEvent.NavigateToPhotographerHome -> onNavigateToPhotographerHome()
+                is SignInUiEvent.NavigateToRoleSelection -> onNavigateToRoleSelection()
                 is SignInUiEvent.NavigateToSignUp -> onNavigateToSignUp()
                 is SignInUiEvent.NavigateToForgotPassword -> onNavigateToForgotPassword()
                 is SignInUiEvent.ShowError -> snackbarHostState.showSnackbar(event.message)
