@@ -46,28 +46,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import com.gndy.camman.presentation.screens.auth.authevents.ForgotPasswordUiEvent
 import com.gndy.camman.presentation.screens.auth.authviewmodel.ForgotPasswordViewModel
+import com.gndy.camman.presentation.theme.CamManColors
 import com.gndy.camman.resources.*
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
-// Dark Theme Colors
-private val BackgroundDark = Color(0xFF101622)
-private val SurfaceDark = Color(0xFF1E2433)
-private val PrimaryBlue = Color(0xFF135BEC)
-private val TextPrimary = Color.White
-private val TextSecondary = Color(0xFF94A3B8)
-private val TextLabel = Color(0xFFCBD5E1)
-private val BorderColor = Color(0xFF475569)
-private val PlaceholderColor = Color(0xFF64748B)
-
-// Message Colors
-private val SuccessGreen = Color(0xFF22C55E)
-private val SuccessGreenLight = Color(0xFF4ADE80)
-private val ErrorRed = Color(0xFFEF4444)
-private val ErrorRedLight = Color(0xFFF87171)
 
 @Composable
 fun ForgotPasswordScreen(
@@ -88,14 +74,17 @@ fun ForgotPasswordScreen(
         }
     }
 
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = BackgroundDark
+        containerColor = colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(colorScheme.background)
                 .padding(paddingValues)
                 .widthIn(max = 480.dp)
         ) {
@@ -114,7 +103,7 @@ fun ForgotPasswordScreen(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(Res.string.back),
-                        tint = TextPrimary.copy(alpha = 0.8f),
+                        tint = extendedColors.textPrimary.copy(alpha = 0.8f),
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -138,7 +127,7 @@ fun ForgotPasswordScreen(
                         text = stringResource(Res.string.reset_password),
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary,
+                        color = extendedColors.textPrimary,
                         lineHeight = 34.sp
                     )
 
@@ -149,7 +138,7 @@ fun ForgotPasswordScreen(
                         text = stringResource(Res.string.forgot_password_desc),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal,
-                        color = TextSecondary,
+                        color = extendedColors.textSecondary,
                         lineHeight = 24.sp
                     )
 
@@ -163,7 +152,7 @@ fun ForgotPasswordScreen(
                             text = stringResource(Res.string.email_address),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
-                            color = TextLabel,
+                            color = extendedColors.textSecondary,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
 
@@ -176,27 +165,27 @@ fun ForgotPasswordScreen(
                             placeholder = {
                                 Text(
                                     text = stringResource(Res.string.enter_your_email),
-                                    color = PlaceholderColor
+                                    color = extendedColors.textSecondary.copy(alpha = 0.6f)
                                 )
                             },
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Default.Email,
                                     contentDescription = stringResource(Res.string.email),
-                                    tint = PlaceholderColor,
+                                    tint = extendedColors.textSecondary.copy(alpha = 0.6f),
                                     modifier = Modifier.size(20.dp)
                                 )
                             },
                             singleLine = true,
                             shape = RoundedCornerShape(8.dp),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = PrimaryBlue,
-                                unfocusedBorderColor = BorderColor,
-                                focusedContainerColor = SurfaceDark.copy(alpha = 0.2f),
-                                unfocusedContainerColor = Color.White.copy(alpha = 0.05f),
-                                focusedTextColor = TextPrimary,
-                                unfocusedTextColor = TextPrimary,
-                                cursorColor = PrimaryBlue
+                                focusedBorderColor = extendedColors.primaryAccent,
+                                unfocusedBorderColor = extendedColors.border,
+                                focusedContainerColor = colorScheme.surface.copy(alpha = 0.2f),
+                                unfocusedContainerColor = colorScheme.surface.copy(alpha = 0.05f),
+                                focusedTextColor = extendedColors.textPrimary,
+                                unfocusedTextColor = extendedColors.textPrimary,
+                                cursorColor = extendedColors.primaryAccent
                             ),
                             isError = uiState.emailError != null,
                             keyboardOptions = KeyboardOptions(
@@ -214,7 +203,7 @@ fun ForgotPasswordScreen(
                         if (uiState.emailError != null) {
                             Text(
                                 text = uiState.emailError!!,
-                                color = ErrorRed,
+                                color = colorScheme.error,
                                 fontSize = 12.sp,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
@@ -227,12 +216,12 @@ fun ForgotPasswordScreen(
                     if (uiState.isEmailSent) {
                         MessageCard(
                             icon = Icons.Default.CheckCircle,
-                            iconTint = SuccessGreen,
-                            backgroundColor = SuccessGreen.copy(alpha = 0.1f),
+                            iconTint = extendedColors.success,
+                            backgroundColor = extendedColors.success.copy(alpha = 0.1f),
                             title = stringResource(Res.string.email_sent),
-                            titleColor = SuccessGreenLight,
+                            titleColor = extendedColors.successLight,
                             message = stringResource(Res.string.check_inbox_instruction),
-                            messageColor = SuccessGreenLight
+                            messageColor = extendedColors.successLight
                         )
                     }
 
@@ -240,12 +229,12 @@ fun ForgotPasswordScreen(
                     if (uiState.error != null && !uiState.isEmailSent) {
                         MessageCard(
                             icon = Icons.Default.Error,
-                            iconTint = ErrorRed,
-                            backgroundColor = ErrorRed.copy(alpha = 0.1f),
+                            iconTint = colorScheme.error,
+                            backgroundColor = colorScheme.errorContainer,
                             title = "Error",
-                            titleColor = ErrorRedLight,
+                            titleColor = colorScheme.onErrorContainer,
                             message = uiState.error!!,
-                            messageColor = ErrorRedLight
+                            messageColor = colorScheme.onErrorContainer
                         )
                     }
                 }
@@ -259,14 +248,14 @@ fun ForgotPasswordScreen(
                         .height(48.dp),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryBlue,
-                        disabledContainerColor = PrimaryBlue.copy(alpha = 0.5f)
+                        containerColor = extendedColors.primaryAccent,
+                        disabledContainerColor = extendedColors.primaryAccent.copy(alpha = 0.5f)
                     )
                 ) {
                     if (uiState.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            color = Color.White,
+                            color = colorScheme.onPrimary,
                             strokeWidth = 2.dp
                         )
                     } else {
@@ -277,7 +266,7 @@ fun ForgotPasswordScreen(
                                 stringResource(Res.string.send_reset_link),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = colorScheme.onPrimary
                         )
                     }
                 }

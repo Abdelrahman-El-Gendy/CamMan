@@ -53,18 +53,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
+import com.gndy.camman.presentation.theme.CamManColors
 import com.gndy.camman.resources.*
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-
-// Design System Colors
-private val PrimaryBlue = Color(0xFF1173D4)
-private val PrimaryBlueLight = Color(0xFF3D8FE0)
-private val BackgroundDark = Color(0xFF101922)
-private val TextWhite = Color.White
-private val TextWhite90 = Color.White.copy(alpha = 0.9f)
-private val IndicatorInactive = Color.White.copy(alpha = 0.5f)
 
 @Composable
 fun OnboardingScreen(
@@ -73,11 +67,13 @@ fun OnboardingScreen(
 ) {
     val pagerState = rememberPagerState(pageCount = { onboardingPages.size })
     val scope = rememberCoroutineScope()
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundDark)
+            .background(colorScheme.background)
     ) {
         // Horizontal Pager for swiping between pages
         HorizontalPager(
@@ -108,7 +104,7 @@ fun OnboardingScreen(
                 TextButton(onClick = onSkip) {
                     Text(
                         text = stringResource(Res.string.skip),
-                        color = TextWhite,
+                        color = extendedColors.textPrimary,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = 0.5.sp
@@ -141,7 +137,7 @@ fun OnboardingScreen(
                 ) { currentPage ->
                     Text(
                         text = stringResource(onboardingPages[currentPage].titleRes),
-                        color = TextWhite,
+                        color = extendedColors.textPrimary,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
@@ -168,7 +164,7 @@ fun OnboardingScreen(
                 ) { currentPage ->
                     Text(
                         text = stringResource(onboardingPages[currentPage].descriptionRes),
-                        color = TextWhite90,
+                        color = extendedColors.textPrimary.copy(alpha = 0.9f),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal,
                         textAlign = TextAlign.Center,
@@ -182,7 +178,9 @@ fun OnboardingScreen(
                 // Page Indicators
                 PageIndicator(
                     pageCount = onboardingPages.size,
-                    currentPage = pagerState.currentPage
+                    currentPage = pagerState.currentPage,
+                    accentColor = extendedColors.primaryAccent,
+                    inactiveColor = extendedColors.textPrimary
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -193,6 +191,8 @@ fun OnboardingScreen(
                         stringResource(Res.string.get_started)
                     else
                         stringResource(Res.string.continue_button),
+                    accentColor = extendedColors.primaryAccent,
+                    textColor = extendedColors.textPrimary,
                     onClick = {
                         if (pagerState.currentPage == onboardingPages.size - 1) {
                             onComplete()
@@ -217,6 +217,8 @@ fun OnboardingScreen(
 @Composable
 private fun AnimatedButton(
     text: String,
+    accentColor: Color,
+    textColor: Color,
     onClick: () -> Unit
 ) {
     var isPressed by remember { mutableStateOf(false) }
@@ -235,6 +237,8 @@ private fun AnimatedButton(
         label = "button_elevation"
     )
 
+    val accentLight = accentColor.copy(alpha = 0.8f)
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -243,8 +247,8 @@ private fun AnimatedButton(
             .shadow(
                 elevation = elevation,
                 shape = RoundedCornerShape(28.dp),
-                ambientColor = PrimaryBlue.copy(alpha = 0.3f),
-                spotColor = PrimaryBlue.copy(alpha = 0.5f)
+                ambientColor = accentColor.copy(alpha = 0.3f),
+                spotColor = accentColor.copy(alpha = 0.5f)
             )
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -265,9 +269,9 @@ private fun AnimatedButton(
                 .background(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
-                            PrimaryBlue,
-                            PrimaryBlueLight,
-                            PrimaryBlue
+                            accentColor,
+                            accentLight,
+                            accentColor
                         )
                     )
                 ),
@@ -292,7 +296,7 @@ private fun AnimatedButton(
             ) { buttonText ->
                 Text(
                     text = buttonText,
-                    color = TextWhite,
+                    color = textColor,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -334,7 +338,9 @@ private fun OnboardingPageContent(
 @Composable
 private fun PageIndicator(
     pageCount: Int,
-    currentPage: Int
+    currentPage: Int,
+    accentColor: Color,
+    inactiveColor: Color
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -365,7 +371,7 @@ private fun PageIndicator(
                     .size(width = width, height = 8.dp)
                     .clip(CircleShape)
                     .background(
-                        if (isSelected) PrimaryBlue else Color.White.copy(alpha = alpha)
+                        if (isSelected) accentColor else inactiveColor.copy(alpha = alpha)
                     )
             )
         }

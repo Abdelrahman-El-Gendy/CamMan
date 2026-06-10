@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gndy.camman.presentation.theme.CamManColors
 import com.gndy.camman.presentation.theme.Gold
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,9 +35,11 @@ fun FilterScreen(
 ) {
     var filterState by remember { mutableStateOf(FilterState()) }
     val scrollState = rememberScrollState()
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
 
     Scaffold(
-        containerColor = Color(0xFF0F172A), // Dark blue background
+        containerColor = colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -44,7 +47,7 @@ fun FilterScreen(
                         "Filters",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = extendedColors.textPrimary
                     )
                 },
                 navigationIcon = {
@@ -52,18 +55,18 @@ fun FilterScreen(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Close",
-                            tint = Color.White
+                            tint = extendedColors.textPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color(0xFF0F172A)
+                    containerColor = colorScheme.background
                 )
             )
         },
         bottomBar = {
             Surface(
-                color = Color(0xFF0F172A),
+                color = colorScheme.background,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
@@ -77,7 +80,7 @@ fun FilterScreen(
                     TextButton(onClick = { filterState = FilterState() }) {
                         Text(
                             "Reset",
-                            color = Color.White.copy(alpha = 0.7f),
+                            color = extendedColors.textPrimary.copy(alpha = 0.7f),
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp
                         )
@@ -90,7 +93,7 @@ fun FilterScreen(
                             .weight(1f)
                             .padding(start = 24.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF0096FF)
+                            containerColor = extendedColors.primaryAccent
                         ),
                         shape = RoundedCornerShape(30.dp)
                     ) {
@@ -112,7 +115,7 @@ fun FilterScreen(
                 .padding(horizontal = 24.dp)
         ) {
             // Location Section
-            FilterSectionHeader("LOCATION")
+            FilterSectionHeader("LOCATION", textColor = extendedColors.textSecondary)
             OutlinedTextField(
                 value = filterState.location,
                 onValueChange = { filterState = filterState.copy(location = it) },
@@ -122,34 +125,34 @@ fun FilterScreen(
                     Icon(
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = null,
-                        tint = Color.White.copy(alpha = 0.5f)
+                        tint = extendedColors.textSecondary.copy(alpha = 0.5f)
                     )
                 },
                 placeholder = {
                     Text(
                         "Search city...",
-                        color = Color.White.copy(alpha = 0.3f)
+                        color = extendedColors.textSecondary.copy(alpha = 0.3f)
                     )
                 },
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF1E293B).copy(alpha = 0.5f),
-                    unfocusedContainerColor = Color(0xFF1E293B).copy(alpha = 0.5f),
+                    focusedContainerColor = colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                    unfocusedContainerColor = colorScheme.surfaceVariant.copy(alpha = 0.5f),
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
+                    focusedTextColor = extendedColors.textPrimary,
+                    unfocusedTextColor = extendedColors.textPrimary
                 )
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
             // Availability Section
-            FilterSectionHeader("AVAILABILITY")
+            FilterSectionHeader("AVAILABILITY", textColor = extendedColors.textSecondary)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
-                    .background(Color(0xFF1E293B).copy(alpha = 0.5f))
+                    .background(colorScheme.surfaceVariant.copy(alpha = 0.5f))
                     .clickable { /* Show date picker */ }
                     .padding(horizontal = 16.dp, vertical = 20.dp)
             ) {
@@ -157,20 +160,20 @@ fun FilterScreen(
                     Icon(
                         imageVector = Icons.Default.CalendarToday,
                         contentDescription = null,
-                        tint = Color.White.copy(alpha = 0.5f),
+                        tint = extendedColors.textSecondary.copy(alpha = 0.5f),
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = filterState.availabilityRange ?: "Select dates",
-                        color = Color.White,
+                        color = extendedColors.textPrimary,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.weight(1f)
                     )
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
-                        tint = Color.White.copy(alpha = 0.5f),
+                        tint = extendedColors.textSecondary.copy(alpha = 0.5f),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -179,7 +182,7 @@ fun FilterScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             // Type of Shoot Section
-            FilterSectionHeader("TYPE OF SHOOT")
+            FilterSectionHeader("TYPE OF SHOOT", textColor = extendedColors.textSecondary)
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 mainAxisSpacing = 12.dp,
@@ -192,7 +195,10 @@ fun FilterScreen(
                         isSelected = isSelected,
                         onClick = {
                             filterState = filterState.copy(shootType = if (isSelected) null else type)
-                        }
+                        },
+                        accentColor = extendedColors.primaryAccent,
+                        surfaceColor = colorScheme.surfaceVariant,
+                        textColor = extendedColors.textPrimary
                     )
                 }
             }
@@ -205,10 +211,10 @@ fun FilterScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                FilterSectionHeader("HOURLY RATE")
+                FilterSectionHeader("HOURLY RATE", textColor = extendedColors.textSecondary)
                 Text(
                     "$${filterState.minPrice.toInt()} - $${filterState.maxPrice.toInt()}",
-                    color = Color(0xFF0096FF),
+                    color = extendedColors.primaryAccent,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -222,23 +228,23 @@ fun FilterScreen(
                 valueRange = 0f..500f,
                 modifier = Modifier.fillMaxWidth(),
                 colors = SliderDefaults.colors(
-                    activeTrackColor = Color(0xFF0096FF),
-                    inactiveTrackColor = Color.White.copy(alpha = 0.1f),
-                    thumbColor = Color.White
+                    activeTrackColor = extendedColors.primaryAccent,
+                    inactiveTrackColor = extendedColors.textPrimary.copy(alpha = 0.1f),
+                    thumbColor = extendedColors.textPrimary
                 )
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("$0", color = Color.White.copy(alpha = 0.4f), style = MaterialTheme.typography.labelMedium)
-                Text("$500+", color = Color.White.copy(alpha = 0.4f), style = MaterialTheme.typography.labelMedium)
+                Text("$0", color = extendedColors.textSecondary.copy(alpha = 0.4f), style = MaterialTheme.typography.labelMedium)
+                Text("$500+", color = extendedColors.textSecondary.copy(alpha = 0.4f), style = MaterialTheme.typography.labelMedium)
             }
 
             Spacer(modifier = Modifier.height(40.dp))
 
             // Client Rating Section
-            FilterSectionHeader("CLIENT RATING")
+            FilterSectionHeader("CLIENT RATING", textColor = extendedColors.textSecondary)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -249,7 +255,10 @@ fun FilterScreen(
                         label = rating,
                         isSelected = isSelected,
                         onClick = { filterState = filterState.copy(rating = rating) },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        accentColor = extendedColors.primaryAccent,
+                        surfaceColor = colorScheme.surfaceVariant,
+                        textColor = extendedColors.textPrimary
                     )
                 }
             }
@@ -260,12 +269,12 @@ fun FilterScreen(
 }
 
 @Composable
-private fun FilterSectionHeader(title: String) {
+private fun FilterSectionHeader(title: String, textColor: Color) {
     Text(
         text = title,
         style = MaterialTheme.typography.labelLarge,
         fontWeight = FontWeight.Bold,
-        color = Color.White.copy(alpha = 0.5f),
+        color = textColor.copy(alpha = 0.5f),
         modifier = Modifier.padding(bottom = 12.dp)
     )
 }
@@ -274,10 +283,13 @@ private fun FilterSectionHeader(title: String) {
 private fun ShootTypeChip(
     label: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    accentColor: Color,
+    surfaceColor: Color,
+    textColor: Color
 ) {
-    val backgroundColor = if (isSelected) Color(0xFF0096FF) else Color(0xFF1E293B).copy(alpha = 0.5f)
-    val contentColor = if (isSelected) Color.White else Color.White.copy(alpha = 0.7f)
+    val backgroundColor = if (isSelected) accentColor else surfaceColor.copy(alpha = 0.5f)
+    val contentColor = if (isSelected) Color.White else textColor.copy(alpha = 0.7f)
     
     Row(
         modifier = Modifier
@@ -309,11 +321,14 @@ private fun RatingChip(
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    accentColor: Color,
+    surfaceColor: Color,
+    textColor: Color
 ) {
-    val backgroundColor = if (isSelected) Color(0xFF0096FF).copy(alpha = 0.1f) else Color(0xFF1E293B).copy(alpha = 0.5f)
-    val borderColor = if (isSelected) Color(0xFF0096FF) else Color.Transparent
-    val contentColor = if (isSelected) Color(0xFF0096FF) else Color.White.copy(alpha = 0.7f)
+    val backgroundColor = if (isSelected) accentColor.copy(alpha = 0.1f) else surfaceColor.copy(alpha = 0.5f)
+    val borderColor = if (isSelected) accentColor else Color.Transparent
+    val contentColor = if (isSelected) accentColor else textColor.copy(alpha = 0.7f)
 
     Box(
         modifier = modifier
@@ -335,7 +350,7 @@ private fun RatingChip(
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
-                    tint = if (isSelected) Color(0xFF0096FF) else Color(0xFFFFD700),
+                    tint = if (isSelected) accentColor else Color(0xFFFFD700),
                     modifier = Modifier.size(16.dp)
                 )
             }

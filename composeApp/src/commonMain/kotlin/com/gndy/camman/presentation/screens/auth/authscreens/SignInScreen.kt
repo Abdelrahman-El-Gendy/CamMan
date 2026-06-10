@@ -58,20 +58,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import com.gndy.camman.presentation.screens.auth.authevents.SignInUiEvent
 import com.gndy.camman.presentation.screens.auth.authviewmodel.SignInViewModel
+import com.gndy.camman.presentation.theme.CamManColors
 import com.gndy.camman.resources.*
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
-// Dark Theme Colors
-private val BackgroundDark = Color(0xFF0D1117)
-private val SurfaceDark = Color(0xFF161B22)
-private val PrimaryBlue = Color(0xFF4A90E2)
-private val TextPrimary = Color(0xFFE6EDF3)
-private val TextSecondary = Color(0xFF8B949E)
-private val BorderColor = Color(0xFF30363D)
 
 @Composable
 fun SignInScreen(
@@ -102,14 +96,17 @@ fun SignInScreen(
         }
     }
 
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = BackgroundDark
+        containerColor = colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(colorScheme.background)
                 .padding(paddingValues)
         ) {
             // Top App Bar
@@ -129,7 +126,7 @@ fun SignInScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = TextPrimary
+                            tint = extendedColors.textPrimary
                         )
                     }
                 }
@@ -152,13 +149,13 @@ fun SignInScreen(
                     modifier = Modifier
                         .size(64.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .background(PrimaryBlue.copy(alpha = 0.1f)),
+                        .background(extendedColors.primaryAccent.copy(alpha = 0.1f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.CameraAlt,
                         contentDescription = null,
-                        tint = PrimaryBlue,
+                        tint = extendedColors.primaryAccent,
                         modifier = Modifier.size(32.dp)
                     )
                 }
@@ -170,7 +167,7 @@ fun SignInScreen(
                     text = stringResource(Res.string.welcome_back),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary,
+                    color = extendedColors.textPrimary,
                     textAlign = TextAlign.Center
                 )
 
@@ -179,7 +176,7 @@ fun SignInScreen(
                 Text(
                     text = stringResource(Res.string.sign_in_to_continue),
                     fontSize = 16.sp,
-                    color = TextSecondary,
+                    color = extendedColors.textSecondary,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.widthIn(max = 300.dp)
                 )
@@ -195,7 +192,7 @@ fun SignInScreen(
                         text = stringResource(Res.string.email),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
-                        color = TextSecondary
+                        color = extendedColors.textSecondary
                     )
 
                     OutlinedTextField(
@@ -207,19 +204,19 @@ fun SignInScreen(
                         placeholder = {
                             Text(
                                 text = "you@example.com",
-                                color = TextSecondary.copy(alpha = 0.7f)
+                                color = extendedColors.textSecondary.copy(alpha = 0.7f)
                             )
                         },
                         singleLine = true,
                         shape = RoundedCornerShape(8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = PrimaryBlue,
-                            unfocusedBorderColor = BorderColor,
-                            focusedContainerColor = SurfaceDark,
-                            unfocusedContainerColor = SurfaceDark,
-                            focusedTextColor = TextPrimary,
-                            unfocusedTextColor = TextPrimary,
-                            cursorColor = PrimaryBlue
+                            focusedBorderColor = extendedColors.primaryAccent,
+                            unfocusedBorderColor = extendedColors.border,
+                            focusedContainerColor = colorScheme.surface,
+                            unfocusedContainerColor = colorScheme.surface,
+                            focusedTextColor = extendedColors.textPrimary,
+                            unfocusedTextColor = extendedColors.textPrimary,
+                            cursorColor = extendedColors.primaryAccent
                         ),
                         isError = uiState.emailError != null,
                         keyboardOptions = KeyboardOptions(
@@ -234,7 +231,7 @@ fun SignInScreen(
                     if (uiState.emailError != null) {
                         Text(
                             text = uiState.emailError!!,
-                            color = Color(0xFFE53935),
+                            color = colorScheme.error,
                             fontSize = 12.sp
                         )
                     }
@@ -251,7 +248,7 @@ fun SignInScreen(
                         text = stringResource(Res.string.password),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
-                        color = TextSecondary
+                        color = extendedColors.textSecondary
                     )
 
                     OutlinedTextField(
@@ -263,7 +260,7 @@ fun SignInScreen(
                         placeholder = {
                             Text(
                                 text = stringResource(Res.string.enter_your_password),
-                                color = TextSecondary.copy(alpha = 0.7f)
+                                color = extendedColors.textSecondary.copy(alpha = 0.7f)
                             )
                         },
                         singleLine = true,
@@ -279,19 +276,19 @@ fun SignInScreen(
                                     else
                                         Icons.Default.VisibilityOff,
                                     contentDescription = stringResource(Res.string.toggle_password_visibility),
-                                    tint = TextSecondary
+                                    tint = extendedColors.textSecondary
                                 )
                             }
                         },
                         shape = RoundedCornerShape(8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = PrimaryBlue,
-                            unfocusedBorderColor = BorderColor,
-                            focusedContainerColor = SurfaceDark,
-                            unfocusedContainerColor = SurfaceDark,
-                            focusedTextColor = TextPrimary,
-                            unfocusedTextColor = TextPrimary,
-                            cursorColor = PrimaryBlue
+                            focusedBorderColor = extendedColors.primaryAccent,
+                            unfocusedBorderColor = extendedColors.border,
+                            focusedContainerColor = colorScheme.surface,
+                            unfocusedContainerColor = colorScheme.surface,
+                            focusedTextColor = extendedColors.textPrimary,
+                            unfocusedTextColor = extendedColors.textPrimary,
+                            cursorColor = extendedColors.primaryAccent
                         ),
                         isError = uiState.passwordError != null,
                         keyboardOptions = KeyboardOptions(
@@ -309,7 +306,7 @@ fun SignInScreen(
                     if (uiState.passwordError != null) {
                         Text(
                             text = uiState.passwordError!!,
-                            color = Color(0xFFE53935),
+                            color = colorScheme.error,
                             fontSize = 12.sp
                         )
                     }
@@ -326,7 +323,7 @@ fun SignInScreen(
                         text = stringResource(Res.string.forgot_password),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
-                        color = PrimaryBlue,
+                        color = extendedColors.primaryAccent,
                         modifier = Modifier
                             .clickable { viewModel.onForgotPasswordClick() }
                             .padding(vertical = 4.dp, horizontal = 8.dp)
@@ -338,7 +335,7 @@ fun SignInScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = uiState.error!!,
-                        color = Color(0xFFE53935),
+                        color = colorScheme.error,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
@@ -356,15 +353,15 @@ fun SignInScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryBlue,
-                        disabledContainerColor = PrimaryBlue.copy(alpha = 0.5f)
+                        containerColor = extendedColors.primaryAccent,
+                        disabledContainerColor = extendedColors.primaryAccent.copy(alpha = 0.5f)
                     ),
                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
                 ) {
                     if (uiState.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            color = Color.White,
+                            color = colorScheme.onPrimary,
                             strokeWidth = 2.dp
                         )
                     } else {
@@ -372,7 +369,7 @@ fun SignInScreen(
                             text = stringResource(Res.string.sign_in),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White
+                            color = colorScheme.onPrimary
                         )
                     }
                 }
@@ -386,18 +383,18 @@ fun SignInScreen(
                 ) {
                     HorizontalDivider(
                         modifier = Modifier.weight(1f),
-                        color = BorderColor
+                        color = extendedColors.border
                     )
                     Text(
                         text = "Or log in with",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
-                        color = TextSecondary,
+                        color = extendedColors.textSecondary,
                         modifier = Modifier.padding(horizontal = 12.dp)
                     )
                     HorizontalDivider(
                         modifier = Modifier.weight(1f),
-                        color = BorderColor
+                        color = extendedColors.border
                     )
                 }
 
@@ -416,10 +413,10 @@ fun SignInScreen(
                             .height(48.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            containerColor = SurfaceDark,
-                            contentColor = TextPrimary
+                            containerColor = colorScheme.surface,
+                            contentColor = extendedColors.textPrimary
                         ),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, BorderColor)
+                        border = androidx.compose.foundation.BorderStroke(1.dp, extendedColors.border)
                     ) {
                         Text(text = "G", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFFEA4335))
                         Spacer(modifier = Modifier.size(8.dp))
@@ -438,10 +435,10 @@ fun SignInScreen(
                             .height(48.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            containerColor = SurfaceDark,
-                            contentColor = TextPrimary
+                            containerColor = colorScheme.surface,
+                            contentColor = extendedColors.textPrimary
                         ),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, BorderColor)
+                        border = androidx.compose.foundation.BorderStroke(1.dp, extendedColors.border)
                     ) {
                         Text(text = "f", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1877F2))
                         Spacer(modifier = Modifier.size(8.dp))
@@ -463,13 +460,13 @@ fun SignInScreen(
                     Text(
                         text = stringResource(Res.string.dont_have_account) + " ",
                         fontSize = 14.sp,
-                        color = TextSecondary
+                        color = extendedColors.textSecondary
                     )
                     Text(
                         text = stringResource(Res.string.sign_up),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = PrimaryBlue,
+                        color = extendedColors.primaryAccent,
                         modifier = Modifier.clickable { viewModel.onSignUpClick() }
                     )
                 }
@@ -484,7 +481,7 @@ fun SignInScreen(
                         Text(
                             text = stringResource(Res.string.continue_browsing),
                             fontSize = 14.sp,
-                            color = TextSecondary
+                            color = extendedColors.textSecondary
                         )
                     }
                 }

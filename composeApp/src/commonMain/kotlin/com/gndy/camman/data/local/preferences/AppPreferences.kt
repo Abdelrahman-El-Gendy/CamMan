@@ -5,6 +5,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
+ * Theme mode options for the app
+ */
+enum class ThemeMode {
+    SYSTEM, // Follow system setting
+    LIGHT,  // Always light
+    DARK    // Always dark
+}
+
+/**
  * Simple in-memory app preferences (for demo purposes)
  * In production, this should use DataStore or SharedPreferences
  */
@@ -18,6 +27,9 @@ class AppPreferences {
     private val _isLoggedIn = MutableStateFlow(false)
     val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
 
+    private val _themeMode = MutableStateFlow(ThemeMode.SYSTEM)
+    val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
+
     fun setHasSeenOnboarding(hasSeen: Boolean) {
         _hasSeenOnboarding.value = hasSeen
     }
@@ -30,10 +42,23 @@ class AppPreferences {
         _isLoggedIn.value = loggedIn
     }
 
+    fun setThemeMode(mode: ThemeMode) {
+        _themeMode.value = mode
+    }
+
+    fun toggleTheme() {
+        _themeMode.value = when (_themeMode.value) {
+            ThemeMode.SYSTEM -> ThemeMode.LIGHT
+            ThemeMode.LIGHT -> ThemeMode.DARK
+            ThemeMode.DARK -> ThemeMode.SYSTEM
+        }
+    }
+
     fun clearAll() {
         _hasSeenOnboarding.value = false
         _userType.value = null
         _isLoggedIn.value = false
+        _themeMode.value = ThemeMode.SYSTEM
     }
 }
 

@@ -19,7 +19,9 @@ private const val USE_MODULAR_NAVIGATION = false // Set to true to use modular n
 
 @Composable
 fun App() {
-    CamManTheme {
+    val themeMode by AppPreferencesHolder.instance.themeMode.collectAsState()
+    
+    CamManTheme(themeMode = themeMode) {
         val navController = rememberNavController()
         val hasSeenOnboarding by AppPreferencesHolder.instance.hasSeenOnboarding.collectAsState()
 

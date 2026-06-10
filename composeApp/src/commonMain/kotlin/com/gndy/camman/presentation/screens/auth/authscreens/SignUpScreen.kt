@@ -64,23 +64,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import com.gndy.camman.domain.model.UserType
 import com.gndy.camman.presentation.screens.auth.authevents.SignUpUiEvent
 import com.gndy.camman.presentation.screens.auth.authviewmodel.SignUpViewModel
+import com.gndy.camman.presentation.theme.CamManColors
 import com.gndy.camman.resources.*
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
-// Dark Theme Colors
-private val BackgroundDark = Color(0xFF0D1117)
-private val SurfaceDark = Color(0xFF161B22)
-private val PrimaryBlue = Color(0xFF4D76FD)
-private val TextPrimary = Color(0xFFE6EDF3)
-private val TextSecondary = Color(0xFF848D97)
-private val BorderColor = Color(0xFF30363D)
-private val ErrorColor = Color(0xFFE53935)
-private val SuccessGreen = Color(0xFF22C55E)
 
 // Input field height
 private val InputFieldHeight = 56.dp
@@ -104,14 +96,17 @@ fun SignUpScreen(
         }
     }
 
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = BackgroundDark
+        containerColor = colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(colorScheme.background)
                 .padding(paddingValues)
         ) {
             // Top Bar with Back Button
@@ -130,7 +125,7 @@ fun SignUpScreen(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(Res.string.back),
-                        tint = TextPrimary
+                        tint = extendedColors.textPrimary
                     )
                 }
             }
@@ -149,7 +144,7 @@ fun SignUpScreen(
                     text = stringResource(Res.string.create_account),
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary,
+                    color = extendedColors.textPrimary,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -158,7 +153,7 @@ fun SignUpScreen(
                 Text(
                     text = stringResource(Res.string.join_camman_portfolio),
                     fontSize = 15.sp,
-                    color = TextSecondary,
+                    color = extendedColors.textSecondary,
                     lineHeight = 22.sp,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -170,7 +165,7 @@ fun SignUpScreen(
                     text = "I am a",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = TextSecondary,
+                    color = extendedColors.textSecondary,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 12.dp)
@@ -186,7 +181,7 @@ fun SignUpScreen(
                 if (uiState.userTypeError != null) {
                     Text(
                         text = uiState.userTypeError!!,
-                        color = ErrorColor,
+                        color = colorScheme.error,
                         fontSize = 12.sp,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -261,13 +256,13 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = uiState.error!!,
-                        color = ErrorColor,
+                        color = colorScheme.error,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(
-                                color = ErrorColor.copy(alpha = 0.1f),
+                                color = colorScheme.errorContainer,
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .padding(12.dp)
@@ -285,15 +280,15 @@ fun SignUpScreen(
                         .height(52.dp),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryBlue,
-                        disabledContainerColor = PrimaryBlue.copy(alpha = 0.5f)
+                        containerColor = extendedColors.primaryAccent,
+                        disabledContainerColor = extendedColors.primaryAccent.copy(alpha = 0.5f)
                     ),
                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
                     if (uiState.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(22.dp),
-                            color = Color.White,
+                            color = colorScheme.onPrimary,
                             strokeWidth = 2.dp
                         )
                     } else {
@@ -301,7 +296,7 @@ fun SignUpScreen(
                             text = stringResource(Res.string.sign_up),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White
+                            color = colorScheme.onPrimary
                         )
                     }
                 }
@@ -315,17 +310,17 @@ fun SignUpScreen(
                 ) {
                     HorizontalDivider(
                         modifier = Modifier.weight(1f),
-                        color = BorderColor
+                        color = extendedColors.border
                     )
                     Text(
                         text = "Or sign up with",
                         fontSize = 13.sp,
-                        color = TextSecondary,
+                        color = extendedColors.textSecondary,
                         modifier = Modifier.padding(horizontal = 12.dp)
                     )
                     HorizontalDivider(
                         modifier = Modifier.weight(1f),
-                        color = BorderColor
+                        color = extendedColors.border
                     )
                 }
 
@@ -340,13 +335,17 @@ fun SignUpScreen(
                     SocialLoginButton(
                         text = "G",
                         textColor = Color(0xFFEA4335),
+                        borderColor = extendedColors.border,
+                        backgroundColor = colorScheme.surface,
                         onClick = { /* TODO: Google OAuth */ }
                     )
 
                     // Apple
                     SocialLoginButton(
                         text = "",
-                        textColor = TextPrimary,
+                        textColor = extendedColors.textPrimary,
+                        borderColor = extendedColors.border,
+                        backgroundColor = colorScheme.surface,
                         onClick = { /* TODO: Apple OAuth */ }
                     )
 
@@ -354,6 +353,8 @@ fun SignUpScreen(
                     SocialLoginButton(
                         text = "f",
                         textColor = Color(0xFF1877F2),
+                        borderColor = extendedColors.border,
+                        backgroundColor = colorScheme.surface,
                         onClick = { /* TODO: Facebook OAuth */ }
                     )
                 }
@@ -368,13 +369,13 @@ fun SignUpScreen(
                     Text(
                         text = stringResource(Res.string.already_have_account) + " ",
                         fontSize = 14.sp,
-                        color = TextSecondary
+                        color = extendedColors.textSecondary
                     )
                     Text(
                         text = stringResource(Res.string.sign_in),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = PrimaryBlue,
+                        color = extendedColors.primaryAccent,
                         modifier = Modifier.clickable { viewModel.onSignInClick() }
                     )
                 }
@@ -395,6 +396,9 @@ private fun UserTypeSelectionCards(
     selectedUserType: UserType?,
     onUserTypeSelected: (UserType) -> Unit
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
+
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -413,7 +417,12 @@ private fun UserTypeSelectionCards(
                     icon = Icons.Default.Person,
                     isSelected = selectedUserType == UserType.USER,
                     onClick = { onUserTypeSelected(UserType.USER) },
-                    isCompactMode = false
+                    isCompactMode = false,
+                    primaryAccent = extendedColors.primaryAccent,
+                    borderColor = extendedColors.border,
+                    surfaceColor = colorScheme.surface,
+                    textPrimary = extendedColors.textPrimary,
+                    textSecondary = extendedColors.textSecondary
                 )
 
                 UserTypeCard(
@@ -423,7 +432,12 @@ private fun UserTypeSelectionCards(
                     icon = Icons.Default.CameraAlt,
                     isSelected = selectedUserType == UserType.PHOTOGRAPHER,
                     onClick = { onUserTypeSelected(UserType.PHOTOGRAPHER) },
-                    isCompactMode = false
+                    isCompactMode = false,
+                    primaryAccent = extendedColors.primaryAccent,
+                    borderColor = extendedColors.border,
+                    surfaceColor = colorScheme.surface,
+                    textPrimary = extendedColors.textPrimary,
+                    textSecondary = extendedColors.textSecondary
                 )
             }
         } else {
@@ -441,7 +455,12 @@ private fun UserTypeSelectionCards(
                     icon = Icons.Default.Person,
                     isSelected = selectedUserType == UserType.USER,
                     onClick = { onUserTypeSelected(UserType.USER) },
-                    isCompactMode = true
+                    isCompactMode = true,
+                    primaryAccent = extendedColors.primaryAccent,
+                    borderColor = extendedColors.border,
+                    surfaceColor = colorScheme.surface,
+                    textPrimary = extendedColors.textPrimary,
+                    textSecondary = extendedColors.textSecondary
                 )
 
                 UserTypeCard(
@@ -451,7 +470,12 @@ private fun UserTypeSelectionCards(
                     icon = Icons.Default.CameraAlt,
                     isSelected = selectedUserType == UserType.PHOTOGRAPHER,
                     onClick = { onUserTypeSelected(UserType.PHOTOGRAPHER) },
-                    isCompactMode = true
+                    isCompactMode = true,
+                    primaryAccent = extendedColors.primaryAccent,
+                    borderColor = extendedColors.border,
+                    surfaceColor = colorScheme.surface,
+                    textPrimary = extendedColors.textPrimary,
+                    textSecondary = extendedColors.textSecondary
                 )
             }
         }
@@ -471,16 +495,21 @@ private fun UserTypeCard(
     icon: ImageVector,
     isSelected: Boolean,
     onClick: () -> Unit,
-    isCompactMode: Boolean = true
+    isCompactMode: Boolean = true,
+    primaryAccent: Color,
+    borderColor: Color,
+    surfaceColor: Color,
+    textPrimary: Color,
+    textSecondary: Color
 ) {
-    val borderColor by animateColorAsState(
-        targetValue = if (isSelected) PrimaryBlue else BorderColor,
+    val animatedBorderColor by animateColorAsState(
+        targetValue = if (isSelected) primaryAccent else borderColor,
         animationSpec = spring(),
         label = "borderColor"
     )
     
     val backgroundColor by animateColorAsState(
-        targetValue = if (isSelected) PrimaryBlue.copy(alpha = 0.1f) else SurfaceDark,
+        targetValue = if (isSelected) primaryAccent.copy(alpha = 0.1f) else surfaceColor,
         animationSpec = spring(),
         label = "backgroundColor"
     )
@@ -505,7 +534,7 @@ private fun UserTypeCard(
             )
             .clip(RoundedCornerShape(16.dp))
             .background(backgroundColor)
-            .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
+            .border(borderWidth, animatedBorderColor, RoundedCornerShape(16.dp))
             .clickable(onClick = onClick)
             .padding(16.dp)
     ) {
@@ -522,15 +551,15 @@ private fun UserTypeCard(
                         .size(iconSize)
                         .clip(CircleShape)
                         .background(
-                            if (isSelected) PrimaryBlue.copy(alpha = 0.2f)
-                            else BorderColor.copy(alpha = 0.3f)
+                            if (isSelected) primaryAccent.copy(alpha = 0.2f)
+                            else borderColor.copy(alpha = 0.3f)
                         ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = icon,
                         contentDescription = title,
-                        tint = if (isSelected) PrimaryBlue else TextSecondary,
+                        tint = if (isSelected) primaryAccent else textSecondary,
                         modifier = Modifier.size(innerIconSize)
                     )
                 }
@@ -541,7 +570,7 @@ private fun UserTypeCard(
                     text = title,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (isSelected) TextPrimary else TextSecondary,
+                    color = if (isSelected) textPrimary else textSecondary,
                     textAlign = TextAlign.Center
                 )
 
@@ -550,7 +579,7 @@ private fun UserTypeCard(
                 Text(
                     text = description,
                     fontSize = 12.sp,
-                    color = TextSecondary.copy(alpha = 0.8f),
+                    color = textSecondary.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center,
                     lineHeight = 16.sp,
                     maxLines = 2
@@ -569,15 +598,15 @@ private fun UserTypeCard(
                         .size(iconSize)
                         .clip(CircleShape)
                         .background(
-                            if (isSelected) PrimaryBlue.copy(alpha = 0.2f)
-                            else BorderColor.copy(alpha = 0.3f)
+                            if (isSelected) primaryAccent.copy(alpha = 0.2f)
+                            else borderColor.copy(alpha = 0.3f)
                         ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = icon,
                         contentDescription = title,
-                        tint = if (isSelected) PrimaryBlue else TextSecondary,
+                        tint = if (isSelected) primaryAccent else textSecondary,
                         modifier = Modifier.size(innerIconSize)
                     )
                 }
@@ -591,7 +620,7 @@ private fun UserTypeCard(
                         text = title,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = if (isSelected) TextPrimary else TextSecondary
+                        color = if (isSelected) textPrimary else textSecondary
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
@@ -599,7 +628,7 @@ private fun UserTypeCard(
                     Text(
                         text = description,
                         fontSize = 13.sp,
-                        color = TextSecondary.copy(alpha = 0.8f),
+                        color = textSecondary.copy(alpha = 0.8f),
                         lineHeight = 18.sp
                     )
                 }
@@ -613,7 +642,7 @@ private fun UserTypeCard(
                     .align(Alignment.TopEnd)
                     .size(22.dp)
                     .clip(CircleShape)
-                    .background(PrimaryBlue),
+                    .background(primaryAccent),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -638,12 +667,15 @@ private fun InputFieldWithLabel(
     imeAction: ImeAction,
     onImeAction: () -> Unit
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = label,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
-            color = TextSecondary,
+            color = extendedColors.textSecondary,
             modifier = Modifier.padding(bottom = 6.dp)
         )
 
@@ -656,21 +688,21 @@ private fun InputFieldWithLabel(
             placeholder = {
                 Text(
                     text = placeholder,
-                    color = TextSecondary.copy(alpha = 0.5f),
+                    color = extendedColors.textSecondary.copy(alpha = 0.5f),
                     fontSize = 15.sp
                 )
             },
             singleLine = true,
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = PrimaryBlue,
-                unfocusedBorderColor = BorderColor,
-                focusedContainerColor = SurfaceDark,
-                unfocusedContainerColor = SurfaceDark,
-                focusedTextColor = TextPrimary,
-                unfocusedTextColor = TextPrimary,
-                cursorColor = PrimaryBlue,
-                errorBorderColor = ErrorColor
+                focusedBorderColor = extendedColors.primaryAccent,
+                unfocusedBorderColor = extendedColors.border,
+                focusedContainerColor = colorScheme.surface,
+                unfocusedContainerColor = colorScheme.surface,
+                focusedTextColor = extendedColors.textPrimary,
+                unfocusedTextColor = extendedColors.textPrimary,
+                cursorColor = extendedColors.primaryAccent,
+                errorBorderColor = colorScheme.error
             ),
             textStyle = androidx.compose.ui.text.TextStyle(fontSize = 15.sp),
             isError = error != null,
@@ -687,7 +719,7 @@ private fun InputFieldWithLabel(
         if (error != null) {
             Text(
                 text = error,
-                color = ErrorColor,
+                color = colorScheme.error,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 4.dp, start = 4.dp)
             )
@@ -708,12 +740,15 @@ private fun PasswordFieldWithLabel(
     imeAction: ImeAction,
     onImeAction: () -> Unit
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+    val extendedColors = CamManColors.extended
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = label,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
-            color = TextSecondary,
+            color = extendedColors.textSecondary,
             modifier = Modifier.padding(bottom = 6.dp)
         )
 
@@ -726,7 +761,7 @@ private fun PasswordFieldWithLabel(
             placeholder = {
                 Text(
                     text = placeholder,
-                    color = TextSecondary.copy(alpha = 0.5f),
+                    color = extendedColors.textSecondary.copy(alpha = 0.5f),
                     fontSize = 15.sp
                 )
             },
@@ -745,21 +780,21 @@ private fun PasswordFieldWithLabel(
                         else
                             Icons.Default.VisibilityOff,
                         contentDescription = "Toggle password visibility",
-                        tint = TextSecondary
+                        tint = extendedColors.textSecondary
                     )
                 }
             },
             singleLine = true,
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = PrimaryBlue,
-                unfocusedBorderColor = BorderColor,
-                focusedContainerColor = SurfaceDark,
-                unfocusedContainerColor = SurfaceDark,
-                focusedTextColor = TextPrimary,
-                unfocusedTextColor = TextPrimary,
-                cursorColor = PrimaryBlue,
-                errorBorderColor = ErrorColor
+                focusedBorderColor = extendedColors.primaryAccent,
+                unfocusedBorderColor = extendedColors.border,
+                focusedContainerColor = colorScheme.surface,
+                unfocusedContainerColor = colorScheme.surface,
+                focusedTextColor = extendedColors.textPrimary,
+                unfocusedTextColor = extendedColors.textPrimary,
+                cursorColor = extendedColors.primaryAccent,
+                errorBorderColor = colorScheme.error
             ),
             textStyle = androidx.compose.ui.text.TextStyle(fontSize = 15.sp),
             isError = error != null,
@@ -776,7 +811,7 @@ private fun PasswordFieldWithLabel(
         if (hint != null && error == null) {
             Text(
                 text = hint,
-                color = TextSecondary.copy(alpha = 0.7f),
+                color = extendedColors.textSecondary.copy(alpha = 0.7f),
                 fontSize = 11.sp,
                 modifier = Modifier.padding(top = 4.dp, start = 4.dp)
             )
@@ -785,7 +820,7 @@ private fun PasswordFieldWithLabel(
         if (error != null) {
             Text(
                 text = error,
-                color = ErrorColor,
+                color = colorScheme.error,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 4.dp, start = 4.dp)
             )
@@ -797,14 +832,16 @@ private fun PasswordFieldWithLabel(
 private fun SocialLoginButton(
     text: String,
     textColor: Color,
+    borderColor: Color,
+    backgroundColor: Color,
     onClick: () -> Unit
 ) {
     IconButton(
         onClick = onClick,
         modifier = Modifier
             .size(56.dp)
-            .border(1.dp, BorderColor, RoundedCornerShape(12.dp))
-            .background(SurfaceDark, RoundedCornerShape(12.dp))
+            .border(1.dp, borderColor, RoundedCornerShape(12.dp))
+            .background(backgroundColor, RoundedCornerShape(12.dp))
     ) {
         Text(
             text = text,
